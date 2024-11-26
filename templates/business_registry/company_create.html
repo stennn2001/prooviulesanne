@@ -85,6 +85,30 @@
 
         <h2 class="h4">Shareholders</h2>
 
+        <!-- Modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            Add
+        </button>
+        {% include 'includes/add_shareholder.html' %}
+        <!-- Modal end-->
+         
+        <form method="GET" action="{% url 'person' %}">
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i
+                        class="bi bi-search"></i></span>
+                <input type="text" name="search" class="form-control"
+                    id="businesSearchInput"
+                    value="{{ search_info }}"
+                    aria-describedby="basic-addon1">
+            </div>
+
+            <button type="submit"
+                class="btn btn-primary">Search</button>
+
+        </form>
+
         <button type="submit" class="btn btn-primary mt-4">Register</button>
     </form>
 
