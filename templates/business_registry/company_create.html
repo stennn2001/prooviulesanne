@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+
+    <form method="post">
+        {% csrf_token %}
+        <h1 class="h2 mb-4">Register Company</h1>
+
+        <h2 class="h4">Company</h2>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="mb-2">
+                    <label for="{{ form.name.id_for_label }}"
+                        class="form-label">Name:</label>
+
+                    {{ form.name }}
+
+                    <div class="form-text">{{ form.name.help_text }}</div>
+
+                    {% if form.name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-2">
+                    <label for="{{ form.registration_code.id_for_label }}"
+                        class="form-label">Registration code:</label>
+
+                    {{ form.registration_code }}
+
+                    <div class="form-text">{{ form.registration_code.help_text }}</div>
+
+                    {% if form.registration_code.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.registration_code.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-2">
+                    <label for="{{ form.establishment_date.id_for_label }}"
+                        class="form-label">Establishment date:</label>
+
+                    {{ form.establishment_date }}
+
+                    <div class="form-text">{{ form.establishment_date.help_text }}</div>
+
+                    {% if form.establishment_date.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.establishment_date.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-2">
+                    <label for="{{ form.total_capital.id_for_label }}"
+                        class="form-label">Total capital:</label>
+
+                    {{ form.total_capital }}
+
+                    <div class="form-text">{{ form.total_capital.help_text }}</div>
+
+                    {% if form.total_capital.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.total_capital.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <h2 class="h4">Shareholders</h2>
+
+        <button type="submit" class="btn btn-primary mt-4">Register</button>
+    </form>
+
+</div>
+
+{% endblock %}
