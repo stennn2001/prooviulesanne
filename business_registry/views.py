@@ -5,10 +5,9 @@ from .forms import CompanyCreationForm
 def company_create(request):
     
     if request.method == "POST":
-        print(request.post)
         form = CompanyCreationForm(request.POST)
         if form.is_valid():
-            company = form.save()
+            form.save()
             print("KATSE", form.cleaned_data)
     else:
         form = CompanyCreationForm()
@@ -16,6 +15,3 @@ def company_create(request):
         "form": form
     }
     return render(request, "business_registry/company_create.html", context)
-
-def person(request):
-    print("helllllooo")
