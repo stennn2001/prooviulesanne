@@ -16,3 +16,10 @@ def search(request):
         "companies_search": companies_search
     }
     return render(request, 'business_registry/company_search.html', context)
+
+def company_detail(request, company_id):
+    company = Company.objects.get(pk=company_id)
+    context = {
+        "company": company
+    }
+    return render(request, 'business_registry/company_detail.html', context)

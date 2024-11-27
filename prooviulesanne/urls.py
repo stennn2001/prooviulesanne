@@ -27,4 +27,6 @@ urlpatterns = [
     path("asutamise_vorm/", include("business_registry.urls")),
     # Otsing
     path("otsing/", views.search, name="search"),
+    # Company
+    path("company/<int:company_id>/", views.company_detail, name="company_detail"),
 ]

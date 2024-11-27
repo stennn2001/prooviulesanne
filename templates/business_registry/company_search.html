@@ -32,7 +32,7 @@
         <div class="row border-bottom">
 
             <div class="col mt-3">
-                <h3>{{ company.name }}</h3>
+                <h3><a href="{% url 'company_detail' company.id %}">{{ company.name }}</a></h3>
                 <p>Reg: {{ company.registration_code }}</p>
             </div>
 
