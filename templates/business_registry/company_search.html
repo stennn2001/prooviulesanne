@@ -28,24 +28,17 @@
     </div>
 
     <div>
-
+        {% for company in companies_search %}
         <div class="row border-bottom">
 
             <div class="col mt-3">
-                <h3>Ettevõte 1</h3>
-                <p>Reg: 65645</p>
+                <h3>{{ company.name }}</h3>
+                <p>Reg: {{ company.registration_code }}</p>
             </div>
 
         </div>
-
-        <div class="row border-bottom">
-
-            <div class="col mt-3">
-                <h3>Ettevõte 2</h3>
-                <p>Reg: 65645</p>
-            </div>
-
-        </div>
+        {% endfor %}
+        
 
     </div>
 
