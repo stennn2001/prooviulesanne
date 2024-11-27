@@ -1,35 +1,32 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Company, Shareholder
-from .forms import CompanyForm, ShareholderForm
-from django.forms import formset_factory
+from django.shortcuts import render, redirect
+from django.forms import modelformset_factory
+from .models import OsaUhing, Osanik
+from .forms import OsaUhingForm, OsanikForm
 
 
+def company_create(request):
+    OsanikFormSet = modelformset_factory(Osanik, form=OsanikForm, extra=1, can_delete=True)
 
+    if request.method == 'POST':
+        osa_uhing_form = OsaUhingForm(request.POST)
+        osanik_formset = OsanikFormSet(request.POST, queryset=Osanik.objects.none())
 
+        if osa_uhing_form.is_valid() and osanik_formset.is_valid():
+            osa_uhing = osa_uhing_form.save()
 
-def company_create(request, pk=None):
-    ShareholderFormSet = formset_factory(
-    ShareholderForm)
+            for osanik_form in osanik_formset:
+                if osanik_form.cleaned_data and not osanik_form.cleaned_data.get('DELETE'):
+                    osanik = osanik_form.save(commit=False)
+                    osanik.osa_uhing = osa_uhing
+                    osanik.save()
 
-    if request.method == "POST":
-        company_form = CompanyForm(request.POST)
-        formset = ShareholderFormSet(request.POST)
-
-        if company_form.is_valid() and formset.is_valid():
-            company = company_form.save()
-            formset.instance = company
-            formset.save()
-            return redirect("search")  # Replace with your success URL
+            return redirect('company_create')  # Replace with your URL
 
     else:
-        company_form = CompanyForm()
-        formset = ShareholderFormSet()
+        osa_uhing_form = OsaUhingForm()
+        osanik_formset = OsanikFormSet(queryset=Osanik.objects.none())
 
-    return render(
-        request,
-        "business_registry/company_create.html",
-        {
-            "form": company_form,
-            "contact_form": formset,
-        },
-    )
+    return render(request, 'business_registry/company_create.html', {
+        'osa_uhing_form': osa_uhing_form,
+        'osanik_formset': osanik_formset,
+    })

@@ -1,19 +1,21 @@
 from django import forms
-from .models import Company, Shareholder
+from django.core.exceptions import ValidationError
+from .models import OsaUhing, Osanik
 
 
-class CompanyForm(forms.ModelForm):
+class OsaUhingForm(forms.ModelForm):
     class Meta:
-        model = Company
-        fields = ['name', 'registration_code', 'establishment_date', 'total_capital']
+        model = OsaUhing
+        fields = ['nimi', 'registrikood', 'asutamiskuupaev', 'kogukapital']
+
+    def clean_asutamiskuupaev(self):
+        asutamiskuupaev = self.cleaned_data.get('asutamiskuupaev')
+        if asutamiskuupaev > now().date():
+            raise ValidationError("Asutamiskuupäev ei tohi olla tulevikus.")
+        return asutamiskuupaev
 
 
-class ShareholderForm(forms.ModelForm):
+class OsanikForm(forms.ModelForm):
     class Meta:
-        model = Shareholder
-        fields = ['name', 'legal_entity', 'share_amount', 'is_founder']
-
-# Create an inline formset for shareholders linked to the company
-# ShareholderFormSet = formset_factory(
-#     Shareholder
-# )
+        model = Osanik
+        fields = ['nimi', 'osa_suurus']

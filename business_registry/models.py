@@ -1,56 +1,48 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-from django.utils.timezone import now
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
 
 
-
-class Person(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+def validate_kogukapital(value):
+    if value < 2500:
+        raise ValidationError("Kogukapitali suurus peab olema vähemalt 2500 eurot.")
 
 
-class LegalEntity(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.name} ({self.registration_code})"
+def validate_nimi(value):
+    if len(value) < 3 or len(value) > 100:
+        raise ValidationError("Nimi peab olema 3 kuni 100 tähemärki pikk.")
 
 
-class Shareholder(models.Model):
-    name = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
-    legal_entity = models.ForeignKey(LegalEntity, on_delete=models.CASCADE, null=True, blank=True)
-    share_amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    is_founder = models.BooleanField(default=False)
-    company = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="shareholders", null=True)
-
-    def __str__(self):
-        if self.person:
-            return f"Shareholder: {self.person}"
-        return f"Shareholder: {self.legal_entity}"
-
-
-class Company(models.Model):
-    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
-    registration_code = models.IntegerField(unique=True, validators=[MaxValueValidator(7)])
-    establishment_date = models.DateField(validators=[MaxValueValidator(limit_value=now().date())])
-    total_capital = models.PositiveIntegerField(validators=[MinValueValidator(2500)])
+class OsaUhing(models.Model):
+    nimi = models.CharField(
+        max_length=100,
+        unique=True,
+        validators=[validate_nimi],
+        help_text="Sisesta nimi, 3 kuni 100 tähte või numbrit."
+    )
+    registrikood = models.CharField(
+        max_length=7,
+        unique=True,
+        help_text="Registrikood peab olema täpselt 7 numbrit."
+    )
+    asutamiskuupaev = models.DateField(
+        help_text="Asutamiskuupäev peab olema väiksem või võrdne tänase kuupäevaga."
+    )
+    kogukapital = models.PositiveIntegerField(
+        validators=[validate_kogukapital],
+        help_text="Kogukapitali suurus peab olema vähemalt 2500 eurot."
+    )
 
     def __str__(self):
-        return f"{self.name} ({self.registration_code})"
+        return self.nimi
 
-    def clean(self):
-        super().clean()
-        if self.shareholders.exists():
-            total_shares = sum(share.share_amount for share in self.shareholders.all())
-            if total_shares != self.total_capital:
-                raise ValidationError("Sum of shareholder shares must equal total capital.")
-            
-    def clean_validate_registration_code(self, value):
-        if len(str(value)) != 7:
-            raise ValidationError("The registration code must be exactly 7 digits.")
-        if not str(value).isdigit():
-            raise ValidationError("The registration code must contain only digits.")
+
+class Osanik(models.Model):
+    osa_uhing = models.ForeignKey(OsaUhing, related_name='osanikud', on_delete=models.CASCADE)
+    nimi = models.CharField(max_length=100, help_text="Osaniku nimi.")
+    osa_suurus = models.PositiveIntegerField(
+        help_text="Osaniku osa suurus eurodes (vähemalt 1)."
+    )
+
+    def __str__(self):
+        return f"{self.nimi} ({self.osa_suurus}€)"
