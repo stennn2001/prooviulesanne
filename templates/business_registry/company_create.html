@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<div class="container mt-5">
 
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+
+<div class="container mt-5">
     <form method="post">
         {% csrf_token %}
         <h1 class="h2 mb-4">Register Company</h1>
@@ -83,122 +87,57 @@
 
         </div>
 
-        <h2 class="h4">Shareholders</h2>
+        <fieldset>
+            <h2>Shareholders</h2>
 
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="form-label">Code:</label>
-                        <input type="text" class="form-control"
-                            id="shareholderCode"
-                            placeholder="Code" />
+            
+<!-- Add the management form and formset for shareholders -->
+            {{ contact_form.management_form }}
+            <div class="link-formset">
+                {% for contact in contact_form %}
+                    <div class="form-container">
+                        {{ contact.as_p }}
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Share amount:</label>
-                        <input type="text" class="form-control"
-                            id="shareholderShareAmount" placeholder="1" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="button" id="addShareholder"
-                            class="btn btn-secondary w-100">Add</button>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
 
-        <ul id="shareholders">
-            <li class="mt-3">
-                <div data-shareholder-name>Firstname Lastname</div>
-                <div data-shareholder-type>person</div>
-                <div data-shareholder-code>12345678</div>
-                <div>
-                    <input type="text" class="form-control w-25"
-                        data-shareholder-share-amount />
-                </div>
+            <!-- Button to create a new shareholder -->
+            <button type="button" class="btn btn-secondary" id="create-new-shareholder">Create New Shareholder</button>
+        </fieldset>
 
-                <input type="hidden" data-shareholder-type />
-                <input type="hidden" data-shareholder-id />
-            </li>
-        </ul>
-
-        <button type="button" id="submitForm"
-            class="btn btn-secondary w-100">Submit</button>
-
-        <button type="submit"
-            onclick="return confirm('Are you sure you want to register this company?')"
-            class="btn btn-primary mt-4">Register</button>
+        <button type="submit" class="btn btn-success">Save</button>
     </form>
 
+    <!-- Hidden container where the form will be injected -->
+    <div id="new-shareholder-container" style="display: none;">
+        <form method="post">
+            {% csrf_token %}
+            <h3>Create New Shareholder</h3>
+            {{ create_shareholder.as_p }}
+            <button type="submit" class="btn btn-success">Create Shareholder</button>
+        </form>
+    </div>
 </div>
 
-<script>
-$(function () {
-    const shareholders = $('#shareholders');
-    const shareholderTemplate = shareholders.html();
-
-    shareholders.find('li:first').remove();
-
-    $('#addShareholder').click(function () {
-        addShareholder('person', $('#shareholderCode').val(), $('#shareholderShareAmount').val());
-    }); 
-
-    $('#submitForm').click(function () {
-        var formData = $('form').serializeArray();
-        var jsonData = {};
-
-        formData.forEach(function(item) {
-            var keys = item.name.replace(/\[|\]/g, '.').split('.');
-            keys.reduce(function(acc, key, index) {
-                if (index === keys.length - 1) {
-                    acc[key] = item.value;
-                } else {
-                    if (!acc[key]) {
-                        acc[key] = {};
-                    }
-                }
-                return acc[key];
-            }, jsonData);
+<script type="text/javascript">
+    $(function() {
+        // Initialize the formset plugin
+        $('.link-formset').formset({
+            addText: 'Add Contact',
+            deleteText: 'Remove Contact',
+            formCssClass: 'dynamic-formset'
         });
 
-        console.log(JSON.stringify(jsonData));
-    }); 
 
-    function countShareholders() {
-        return shareholders.children().length;
-    }
-
-    function addShareholder(type, code, shareAmount) {
-        //TODO: API call
-
-        const response = {
-            'id': 1,
-            'type': 'person',
-            'name': 'John Doe',
-            'code': 123456789,
-        };
-
-        addShareholderRow(response.id, response.type, response.name, response.code, shareAmount);
-    }
-
-    function addShareholderRow(id, type, name, code, shareAmount) {
-        const shareholder = $(shareholderTemplate);
-        const row = countShareholders() - 1;
-
-        shareholder.find('[data-shareholder-name]').text(name);
-        shareholder.find('[data-shareholder-type]').text(type);
-        shareholder.find('[data-shareholder-code]').text(code);
-        shareholder.find('[data-shareholder-share-amount]').text(shareAmount);
-
-        shareholder.find('input[data-shareholder-type]').attr('name', `shareholders[${row}][type]`).val(type);
-        shareholder.find('input[data-shareholder-id]').attr('name', `shareholders[${row}][id]`).val(id);
-        shareholder.find('input[data-shareholder-share-amount]').attr('name', `shareholders[${row}][share_amount]`).val(shareAmount);
-
-        shareholders.append(shareholder);
-        console.log(shareholder.html());
-    }
-});
+        // Handle "Create New Shareholder" click
+        $('#create-new-shareholder').click(function() {
+            // Show the form to create a new shareholder
+            $('#new-shareholder-container').show();  // Show the hidden form container
+        });
+    });
 </script>
 
 {% endblock %}
+
+
+

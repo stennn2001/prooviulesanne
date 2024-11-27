@@ -1,17 +1,35 @@
-from django.shortcuts import render
-from .forms import CompanyCreationForm
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Company, Shareholder
+from .forms import CompanyForm, ShareholderForm
+from django.forms import formset_factory
 
-# Create your views here.
-def company_create(request):
-    
+
+
+
+
+def company_create(request, pk=None):
+    ShareholderFormSet = formset_factory(
+    ShareholderForm)
+
     if request.method == "POST":
-        form = CompanyCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            print("KATSE", form.cleaned_data)
+        company_form = CompanyForm(request.POST)
+        formset = ShareholderFormSet(request.POST)
+
+        if company_form.is_valid() and formset.is_valid():
+            company = company_form.save()
+            formset.instance = company
+            formset.save()
+            return redirect("search")  # Replace with your success URL
+
     else:
-        form = CompanyCreationForm()
-    context= {
-        "form": form
-    }
-    return render(request, "business_registry/company_create.html", context)
+        company_form = CompanyForm()
+        formset = ShareholderFormSet()
+
+    return render(
+        request,
+        "business_registry/company_create.html",
+        {
+            "form": company_form,
+            "contact_form": formset,
+        },
+    )

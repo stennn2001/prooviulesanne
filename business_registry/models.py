@@ -25,6 +25,7 @@ class Shareholder(models.Model):
     legal_entity = models.ForeignKey(LegalEntity, on_delete=models.CASCADE, null=True, blank=True)
     share_amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     is_founder = models.BooleanField(default=False)
+    company = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="shareholders", null=True)
 
     def __str__(self):
         if self.person:
@@ -37,7 +38,6 @@ class Company(models.Model):
     registration_code = models.IntegerField(unique=True, validators=[MaxValueValidator(7)])
     establishment_date = models.DateField(validators=[MaxValueValidator(limit_value=now().date())])
     total_capital = models.PositiveIntegerField(validators=[MinValueValidator(2500)])
-    shareholders = models.ManyToManyField(Shareholder, related_name="companies")
 
     def __str__(self):
         return f"{self.name} ({self.registration_code})"
