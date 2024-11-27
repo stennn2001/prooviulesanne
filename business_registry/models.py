@@ -1,56 +1,37 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-from django.utils.timezone import now
-from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 
-
-
-class Person(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
-class LegalEntity(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.name} ({self.registration_code})"
-
-
-class Shareholder(models.Model):
-    name = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
-    legal_entity = models.ForeignKey(LegalEntity, on_delete=models.CASCADE, null=True, blank=True)
-    share_amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    is_founder = models.BooleanField(default=False)
-    company = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="shareholders", null=True)
-
-    def __str__(self):
-        if self.person:
-            return f"Shareholder: {self.person}"
-        return f"Shareholder: {self.legal_entity}"
-
+class StakeholderType(models.TextChoices):
+    PERSON = 'person', 'Physical Person'
+    ENTITY = 'entity', 'Legal Entity'
 
 class Company(models.Model):
-    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
-    registration_code = models.IntegerField(unique=True, validators=[MaxValueValidator(7)])
-    establishment_date = models.DateField(validators=[MaxValueValidator(limit_value=now().date())])
-    total_capital = models.PositiveIntegerField(validators=[MinValueValidator(2500)])
+    name = models.CharField(max_length=100, unique=True)
+    registration_code = models.CharField(max_length=7, unique=True)
+    established_date = models.DateField()
+    total_capital = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.name} ({self.registration_code})"
+        return self.name
 
-    def clean(self):
-        super().clean()
-        if self.shareholders.exists():
-            total_shares = sum(share.share_amount for share in self.shareholders.all())
-            if total_shares != self.total_capital:
-                raise ValidationError("Sum of shareholder shares must equal total capital.")
-            
-    def clean_validate_registration_code(self, value):
-        if len(str(value)) != 7:
-            raise ValidationError("The registration code must be exactly 7 digits.")
-        if not str(value).isdigit():
-            raise ValidationError("The registration code must contain only digits.")
+class Stakeholder(models.Model):
+    type = models.CharField(max_length=6, choices=StakeholderType.choices)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    identification_code = models.IntegerField(max_length=11, min_length=11, unique=True, null=True, blank=True)
+    entity_name = models.CharField(max_length=100, null=True, blank=True)
+    entity_reg_code = models.CharField(max_length=7, unique=True, null=True, blank=True)
+
+    def __str__(self):
+        if self.type == 'person':
+            return f'Person: {self.first_name} {self.last_name}'
+        return f"Legal Enityt: {self.entity_name} ({self.entity_reg_code})"
+
+class CompanyStakeholder(models.Model):
+    company = models.ForeignKey(Company, related_name='stakeholders', on_delete=models.CASCADE)
+    stakeholder = models.ForeignKey(Stakeholder, related_name='companies', on_delete=models.CASCADE)
+    ownership_share = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    is_founder = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.stakeholder} - {self.company}'

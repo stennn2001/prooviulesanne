@@ -3,7 +3,7 @@ from .models import Person, LegalEntity, Shareholder, Company
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ("id", "first_name", "last_name",)
+    list_display = ("first_name", "last_name",)
     search_fields = ("first_name", "last_name",)
 
 
@@ -22,4 +22,4 @@ class ShareholderAdmin(admin.ModelAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ("name", "registration_code", "establishment_date", "total_capital")
     search_fields = ("name", "registration_code")
-   # filter_horizontal = ("shareholders",)
+    filter_horizontal = ("shareholders",)
