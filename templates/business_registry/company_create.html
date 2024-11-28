@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register Company{% endblock %}
+
 {% block content %}
+
+
 <div class="container mt-5">
 
     <form method="post">
@@ -21,11 +27,11 @@
                     <div class="form-text">{{ form.name.help_text }}</div>
 
                     {% if form.name.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.name.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
@@ -38,32 +44,32 @@
                     <div class="form-text">{{ form.registration_code.help_text }}</div>
 
                     {% if form.registration_code.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.registration_code.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.registration_code.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
-                <div class="mb-2">
-                    <label for="{{ form.establishment_date.id_for_label }}"
+                <div class="mb-2 w-50">
+                    <label for="{{ form.established_date.id_for_label }}"
                         class="form-label">Establishment date:</label>
 
-                    {{ form.establishment_date }}
+                    {{ form.established_date }}
 
-                    <div class="form-text">{{ form.establishment_date.help_text }}</div>
+                    <div class="form-text">{{ form.established_date.help_text }}</div>
 
-                    {% if form.establishment_date.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.establishment_date.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                    {% if form.established_date.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.established_date.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
-                <div class="mb-2">
+                <div class="mb-2 w-50">
                     <label for="{{ form.total_capital.id_for_label }}"
                         class="form-label">Total capital:</label>
 
@@ -72,17 +78,16 @@
                     <div class="form-text">{{ form.total_capital.help_text }}</div>
 
                     {% if form.total_capital.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.total_capital.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.total_capital.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
             </div>
 
         </div>
-
         <h2 class="h4">Shareholders</h2>
 
         <div class="card mb-3">
@@ -133,72 +138,8 @@
 
 </div>
 
-<script>
-$(function () {
-    const shareholders = $('#shareholders');
-    const shareholderTemplate = shareholders.html();
-
-    shareholders.find('li:first').remove();
-
-    $('#addShareholder').click(function () {
-        addShareholder('person', $('#shareholderCode').val(), $('#shareholderShareAmount').val());
-    }); 
-
-    $('#submitForm').click(function () {
-        var formData = $('form').serializeArray();
-        var jsonData = {};
-
-        formData.forEach(function(item) {
-            var keys = item.name.replace(/\[|\]/g, '.').split('.');
-            keys.reduce(function(acc, key, index) {
-                if (index === keys.length - 1) {
-                    acc[key] = item.value;
-                } else {
-                    if (!acc[key]) {
-                        acc[key] = {};
-                    }
-                }
-                return acc[key];
-            }, jsonData);
-        });
-
-        console.log(JSON.stringify(jsonData));
-    }); 
-
-    function countShareholders() {
-        return shareholders.children().length;
-    }
-
-    function addShareholder(type, code, shareAmount) {
-        //TODO: API call
-
-        const response = {
-            'id': 1,
-            'type': 'person',
-            'name': 'John Doe',
-            'code': 123456789,
-        };
-
-        addShareholderRow(response.id, response.type, response.name, response.code, shareAmount);
-    }
-
-    function addShareholderRow(id, type, name, code, shareAmount) {
-        const shareholder = $(shareholderTemplate);
-        const row = countShareholders() - 1;
-
-        shareholder.find('[data-shareholder-name]').text(name);
-        shareholder.find('[data-shareholder-type]').text(type);
-        shareholder.find('[data-shareholder-code]').text(code);
-        shareholder.find('[data-shareholder-share-amount]').text(shareAmount);
-
-        shareholder.find('input[data-shareholder-type]').attr('name', `shareholders[${row}][type]`).val(type);
-        shareholder.find('input[data-shareholder-id]').attr('name', `shareholders[${row}][id]`).val(id);
-        shareholder.find('input[data-shareholder-share-amount]').attr('name', `shareholders[${row}][share_amount]`).val(shareAmount);
-
-        shareholders.append(shareholder);
-        console.log(shareholder.html());
-    }
-});
-</script>
+<script src="{% static 'js/company_create.js' %}"></script>
 
 {% endblock %}
+
+

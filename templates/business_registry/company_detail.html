@@ -1,33 +1,86 @@
 {% extends 'base.html' %}
-{% block content %}
 
-{% if company %}
+{% block title %}{{ company.name }}{% endblock %}
+
+{% block content %}
+{% load price_filter %}
+
 <div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Company Details</h5>
-            <p><strong>Name:</strong> {{ company.name }}</p>
-            <p><strong>Registration Code:</strong> {{ company.registration_code }}</p>            
-            <p><strong>Established Date:</strong> {{ company.established_date }}</p>
-            <p><strong>Total Capital:</strong> {{ company.total_capital }}</p>
-            {% if company.shareholder.all %}            
-            <p><strong>Shareholders:</strong></p>
-            <ul>
-                {% for holder in company.shareholder.all %}
-                <li>{{ holder }} - {{ holder.ownership_share }} Eur - {% if holder.shareholder.type == "person" %}
-                    {{ holder.shareholder.first_name }} {{ holder.shareholder.last_name }}
+
+    <h1 class="h2 mb-3">{{ company.name }}</h1>
+
+    <div class="row">
+
+        <div class="mb-3 mb-md-0 col-md-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    General information
+                </div>
+
+                <div class="card-body">
+                   
+                    <p><strong>Name:</strong> {{ company.name }}</p>
+                    <p><strong>Registration Code:</strong> {{ company.registration_code }}</p>            
+                    <p><strong>Established Date:</strong> {{ company.established_date|date:"F j, Y" }}</p>
+                    <p><strong>Total Capital:</strong> {{ company.total_capital|price }}</p>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+    
+            <div class="card">
+
+                <div class="card-header">
+                    Shareholders
+                </div>
+
+                <div class="card-body">
+                    
+                    {% if company.shareholder.all %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Shareholder</th>
+                                <th scope="col">Share</th>
+                                <th scope="col">Founder</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for holder in company.shareholder.all %}
+                            <tr>
+                                <td>
+                                    {% if holder.shareholder.type == "person" %}
+                                        <i class="bi bi-person text-primary pe-1"></i>
+                                        <span>{{ holder.shareholder.first_name }} {{ holder.shareholder.last_name }}</span>
+                                    {% else %}
+                                        <i class="bi bi-building text-primary pe-1"></i>
+                                        <span>{{ holder.shareholder.entity_name }} ({{ holder.shareholder.entity_reg_code }})</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ holder.ownership_share|price }}</td>
+                                <td>{% if holder.is_founder %}Yes{% else %}No{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
                     {% else %}
-                    {{ holder.shareholder.entity_name }} ({{ holder.shareholder.entity_reg_code }})
-                    {% endif %}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            Missing shareholders
-            {% endif %}
+                        <div class="alert alert-warning text-center" role="alert">
+                            No shareholders found
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-{% endif %}
 
+</div>
 
 {% endblock %}

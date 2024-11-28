@@ -1,0 +1,21 @@
+<form method="GET" action="{% url 'search' %}">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">
+            <i class="bi bi-search"></i>
+        </span>
+        <input type="text"
+            name="search"
+            class="form-control"
+            id="businessSearchInput"
+            value="{{ search_info }}"
+            aria-describedby="basic-addon1">
+    </div>
+    {% if form.search.errors %}
+    <div class="invalid-feedback d-block">
+        {% for error in form.search.errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
