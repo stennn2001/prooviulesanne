@@ -9,13 +9,21 @@
             <p><strong>Name:</strong> {{ company.name }}</p>
             <p><strong>Registration Code:</strong> {{ company.registration_code }}</p>            
             <p><strong>Established Date:</strong> {{ company.established_date }}</p>
-            <p><strong>Total Capital:</strong> {{ company.total_capital }}</p>            
+            <p><strong>Total Capital:</strong> {{ company.total_capital }}</p>
+            {% if company.shareholder.all %}            
             <p><strong>Shareholders:</strong></p>
             <ul>
-                {% for shareholder in company.shareholders.all %}
-                <li>{{ shareholder.name }} - {{ shareholder.share_amount }}</li>
+                {% for holder in company.shareholder.all %}
+                <li>{{ holder }} - {{ holder.ownership_share }} Eur - {% if holder.shareholder.type == "person" %}
+                    {{ holder.shareholder.first_name }} {{ holder.shareholder.last_name }}
+                    {% else %}
+                    {{ holder.shareholder.entity_name }} ({{ holder.shareholder.entity_reg_code }})
+                    {% endif %}</li>
                 {% endfor %}
             </ul>
+            {% else %}
+            Missing shareholders
+            {% endif %}
         </div>
     </div>
 </div>
