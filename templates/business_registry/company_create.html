@@ -5,10 +5,9 @@
 
 {% block content %}
 
-
 <div class="container mt-5">
 
-    <form method="post">
+    <form method="post" id="companyForm">
         {% csrf_token %}
         <h1 class="h2 mb-4">Register Company</h1>
 
@@ -90,25 +89,31 @@
         </div>
         <h2 class="h4">Shareholders</h2>
 
+        {% if shareholders_json_errors %}
+            <div class="alert alert-danger mt-3" role="alert">
+                {% for error in shareholders_json_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="card mb-3">
             <div class="card-body">
                 <div class="row">
+
                     <div class="col-md-4">
                         <label class="form-label">Code:</label>
                         <input type="text" class="form-control"
-                            id="shareholderCode"
+                            id="shareholderSearchInput"
                             placeholder="Code" />
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Share amount:</label>
-                        <input type="text" class="form-control"
-                            id="shareholderShareAmount" placeholder="1" />
-                    </div>
+
                     <div class="col-md-4">
                         <label class="form-label">&nbsp;</label>
                         <button type="button" id="addShareholder"
                             class="btn btn-secondary w-100">Add</button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -119,24 +124,29 @@
                 <div data-shareholder-type>person</div>
                 <div data-shareholder-code>12345678</div>
                 <div>
-                    <input type="text" class="form-control w-25"
+                    <input type="number" min="1" class="form-control w-25"
                         data-shareholder-share-amount />
                 </div>
 
                 <input type="hidden" data-shareholder-type />
                 <input type="hidden" data-shareholder-id />
+
+                <button type="button" class="btn btn-danger mt-2" data-shareholder-remove>Remove</button>
             </li>
         </ul>
 
-        <button type="button" id="submitForm"
-            class="btn btn-secondary w-100">Submit</button>
+        <input type="hidden" id="shareholdersInput" name="shareholders_json" value="{{ request.POST.shareholders_json }}" />
 
-        <button type="submit"
-            onclick="return confirm('Are you sure you want to register this company?')"
+        <button type="button"
+            id="submitForm"
             class="btn btn-primary mt-4">Register</button>
     </form>
 
 </div>
+
+<script>
+    const SHAREHOLDERS_SEARCH_URL = "http://127.0.0.1:8000/company/shareholders/search/";
+</script>
 
 <script src="{% static 'js/company_create.js' %}"></script>
 
