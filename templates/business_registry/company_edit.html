@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="h2 mb-3">Shareholders: {{ company.name }}</h2>
+
+    <div>
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+            <div class="shareholder-form">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+
+    <div class="mt-2">
+        <a href="{% url 'company_detail' company.id %}">Cancel</a>
+    </div>
+</div>
+{% endblock %}
+
+

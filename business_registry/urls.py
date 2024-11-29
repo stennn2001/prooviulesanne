@@ -4,9 +4,15 @@ from . import views
 
 urlpatterns = [
     # Company creation form
-    path("", views.company_create, name="company_create"),
+    path("create/", views.company_create, name="company_create"),
     # Company details
-    path("detail/<int:company_id>/", views.company_detail, name="company_detail"),
+    path("details/<int:company_id>/", views.company_detail, name="company_detail"),
     # Search
     path("search/", views.search, name="search"),
+    # Company edit
+    path("edit/<int:company_id>/", views.company_edit, name="company_edit"),
+    
+    
+    # Search
+    path("shareholders/search/", views.search_shareholders, name="search_shareholders"),
 ]
