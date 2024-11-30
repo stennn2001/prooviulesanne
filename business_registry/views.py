@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import Company, CompanyShareholder
+from .models import Company, Shareholder
 from django.http import JsonResponse
 from django.db.models import Q
-from .forms import CompanyCreationForm, SearchForm, CompanyShareholderEditForm
+from .forms import CompanyCreationForm, SearchForm, ShareholderEditForm
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.forms import modelformset_factory
@@ -73,15 +73,15 @@ def company_edit(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     shareholders = company.shareholder.all()
     print(shareholders)
-    ShareholderFormSet = modelformset_factory(CompanyShareholder, form=CompanyShareholderEditForm, extra=0)
+    ShareholderFormSet = modelformset_factory(Shareholder, form=ShareholderEditForm, extra=0)
     if request.method == 'POST':
-        form = CompanyShareholderEditForm(request.POST, instance=shareholders)
+        form = ShareholderEditForm(request.POST, instance=shareholders)
         formset = ShareholderFormSet(request.POST, queryset=company.shareholder.all())
         if form.is_valid():
             form.save()
             return redirect('company_detail', company_id=company.id)
     else:
-        form = CompanyShareholderEditForm(instance=company)
+        form = ShareholderEditForm(instance=company)
         formset = ShareholderFormSet(queryset=company.shareholder.all())
     context = {
         'form': form,

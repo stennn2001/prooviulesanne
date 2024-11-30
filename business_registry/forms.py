@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Company, CompanyShareholder
+from .models import Company, Shareholder
 from django.utils.timezone import now
 
 class CompanyCreationForm(forms.ModelForm):
@@ -40,14 +40,14 @@ class SearchForm(forms.Form):
                 raise forms.ValidationError(f"Registry code must be 7 digits. You have entered {len(search)} digits.")
         return search
     
-class CompanyShareholderEditForm(forms.ModelForm):
+class ShareholderEditForm(forms.ModelForm):
     #company = forms.ModelChoiceField(queryset=Company.objects.filter(), widget=forms.Select(attrs={'class': 'form-control'}))
-    shareholder = forms.ModelChoiceField(queryset=CompanyShareholder.objects.all(), label="", widget=forms.Select(attrs={'class': 'form-control',
+    shareholder = forms.ModelChoiceField(queryset=Shareholder.objects.all(), label="", widget=forms.Select(attrs={'class': 'form-control',
                                                                                                                #'disabled': True
                                                                                                                }))
     class Meta:
-        model = CompanyShareholder
-        fields = ["shareholder", "ownership_share"]
+        model = Shareholder
+        fields = ["shareholder", "share_amount"]
         
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
