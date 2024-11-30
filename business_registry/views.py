@@ -39,14 +39,12 @@ def company_detail(request, company_id):
 def search(request):
     form = SearchForm(request.GET or None)
     search_info = request.GET.get("search", "")
-    print("KATSE1", search_info)
+
     if form.is_valid():
         search_info = form.cleaned_data.get("search", "")
-        print("KATSE", search_info)
-        companies_search = Company.objects.filter(Q(name__icontains=search_info) | Q(registration_code__icontains=search_info))
+        companies_search = Company.objects.filter(Q(name__icontains=search_info) | Q(code__icontains=search_info))
     else:
         companies_search = None
-    print(companies_search)
 
     context = {
         "form": form,
