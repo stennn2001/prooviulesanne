@@ -22,7 +22,7 @@
                 <div class="card-body">
                    
                     <p><strong>Name:</strong> {{ company.name }}</p>
-                    <p><strong>Registration Code:</strong> {{ company.registration_code }}</p>            
+                    <p><strong>Registration Code:</strong> {{ company.code }}</p>            
                     <p><strong>Established Date:</strong> {{ company.established_date|date:"F j, Y" }}</p>
                     <p><strong>Total Capital:</strong> {{ company.total_capital|price }}</p>
 
@@ -54,15 +54,15 @@
                             {% for holder in company.shareholder.all %}
                             <tr>
                                 <td>
-                                    {% if holder.shareholder.type == "person" %}
+                                    {% if holder.shareholder_type == "person" %}
                                         <i class="bi bi-person text-primary pe-1"></i>
-                                        <span>{{ holder.shareholder.first_name }} {{ holder.shareholder.last_name }}</span>
+                                        <span>{{ holder.shareholder_person_id.first_name }} {{ holder.shareholder_person_id.last_name }}</span>
                                     {% else %}
                                         <i class="bi bi-building text-primary pe-1"></i>
-                                        <span>{{ holder.shareholder.entity_name }} ({{ holder.shareholder.entity_reg_code }})</span>
+                                        <span>{{ holder.shareholder_company_id.name }} ({{ holder.shareholder_company_id.code }})</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ holder.ownership_share|price }}</td>
+                                <td>{{ holder.share_amount|price }}</td>
                                 <td>{% if holder.is_founder %}Yes{% else %}No{% endif %}</td>
                             </tr>
                             {% endfor %}
