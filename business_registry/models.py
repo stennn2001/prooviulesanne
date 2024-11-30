@@ -1,11 +1,7 @@
 
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
-
-class ShareholderType(models.TextChoices):
-    PERSON = "person", "Physical Person"
-    COMPANY = "company", "Company"
 
 class ShareholderType(models.TextChoices):
     PERSON = "person", "Physical Person"

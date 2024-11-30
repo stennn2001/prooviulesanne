@@ -2,9 +2,13 @@
 from django import forms
 from .models import Company, Shareholder
 from django.utils.timezone import now
+from django.core.validators import MaxLengthValidator
 
 class CompanyCreationForm(forms.ModelForm):
     established_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    code = forms.CharField(widget=forms.NumberInput(attrs={"type": "number","maxlength": "7"}),
+                              validators=[MaxLengthValidator(7,
+                                message="The registration code must not exceed 7 numbers. You entered %(show_value)s number.")])
     class Meta:
         model = Company
         fields = "__all__"
@@ -12,16 +16,16 @@ class CompanyCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for field_name, field in self.fields.items():
-            if field_name == "established_date":
-                field.widget.attrs["dateFormat"] = "dd/mm/yy"
+        for _, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
             
-    def clean_registration_code(self):
-        registration_code = self.cleaned_data['registration_code']
-        if not registration_code.isdigit():
+    def clean_code(self):
+        code = self.cleaned_data['code']
+        if not code.isdigit():
             raise forms.ValidationError("The registration code must contain only digits.")
-        return registration_code
+        elif len(code) != 7:
+            raise forms.ValidationError(f"The registration code must be 7 digits. You have entered {len(code)} digit{'s' if len(code) != 1 else ''}.")
+        return code
     
     def clean_established_date(self):
         established_date = self.cleaned_data.get("established_date")
