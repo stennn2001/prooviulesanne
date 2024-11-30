@@ -47,8 +47,6 @@ class ShareholderAdmin(admin.ModelAdmin):
     
     
     def get_shareholder(self, obj):
-        from django.contrib.auth.hashers import make_password
-        print("Password:", make_password('admin'))
         if obj.shareholder_type == "person" and obj.shareholder_person_id:
             person_name = f"{obj.shareholder_person_id.first_name} {obj.shareholder_person_id.last_name}"
             return format_html(
