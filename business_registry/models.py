@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 class ShareholderType(models.TextChoices):
     PERSON = "person", "Physical Person"
@@ -36,7 +37,7 @@ class Person(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Person: {self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
 class Shareholder(models.Model):
     company_id = models.ForeignKey(Company, related_name="shareholder", on_delete=models.CASCADE)
@@ -55,6 +56,16 @@ class Shareholder(models.Model):
         elif self.shareholder_type == "company":
             return f"Company:{self.shareholder_company_id.name} - {self.company_id.name}"
         return "N/A"
+
+    def clean(self):
+        if self.shareholder_type == "person" and not self.shareholder_person_id:
+            raise ValidationError("For shareholder type 'Physical Person', 'Shareholder Person ID' must be filled.")
+        if self.shareholder_type == "person" and self.shareholder_company_id:
+            raise ValidationError("For shareholder type 'Physical Person', 'Shareholder Company ID' must be empty.")
+        if self.shareholder_type == "company" and not self.shareholder_company_id:
+            raise ValidationError("For shareholder type 'Company', 'Shareholder Company ID' must be filled.")
+        if self.shareholder_type == "company" and self.shareholder_person_id:
+            raise ValidationError("For shareholder type 'Company', 'Shareholder Person ID' must be empty.")
 
 # class ShareholderType(models.TextChoices):
 #     PERSON = "person", "Physical Person"
