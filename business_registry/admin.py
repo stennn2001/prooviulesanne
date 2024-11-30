@@ -3,6 +3,10 @@ from .models import Company, Person, Shareholder
 from django.utils.html import format_html
 
 
+admin.site.site_header = "RIK"
+admin.site.site_title = "RIK Admin"
+admin.site.index_title = "Welcome to RIK Admin Page"
+
 class ShareholderInline(admin.TabularInline):
     model = Shareholder
     fk_name = "company_id"
@@ -10,9 +14,12 @@ class ShareholderInline(admin.TabularInline):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ["name", "code", "type", "established_date", "total_capital", "owned_capital", "owners"]
+    list_display = ["name", "code", "type", "established_date", "total_capital", "owned_capital", "owners", "updated_at", "created_at"]
     search_fields = ["name", "code"]
     inlines = [ShareholderInline]
+    ordering = ["-created_at"]
+    list_display_links = ["name", "code"]
+    date_hierarchy = "established_date"
 
     def owned_capital(self, obj):
         return sum(share.share_amount for share in obj.shareholder.all())
@@ -20,17 +27,19 @@ class CompanyAdmin(admin.ModelAdmin):
     def owners(self, obj):
         shareholders = obj.shareholder.all()
         owners_list = []
-        for shareholder in shareholders:
-            if shareholder.shareholder_type == "person":
-                person = shareholder.shareholder_person_id
-                if person:
-                    owners_list.append(f"{person.first_name} {person.last_name}")
-            elif shareholder.shareholder_type == "company":
-                company = shareholder.shareholder_company_id
-                if company:
-                    owners_list.append(company.name)
-        return ", ".join(owners_list)
-
+        if shareholders:
+            for shareholder in shareholders:
+                if shareholder.shareholder_type == "person":
+                    person = shareholder.shareholder_person_id
+                    if person:
+                        owners_list.append(f"{person.first_name} {person.last_name}")
+                elif shareholder.shareholder_type == "company":
+                    company = shareholder.shareholder_company_id
+                    if company:
+                        owners_list.append(company.name)
+            return ", ".join(owners_list)
+        else:
+            return format_html('<span style="color: red;">No shareholders</span>')
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
