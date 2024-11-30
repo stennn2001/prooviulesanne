@@ -11,6 +11,7 @@ class ShareholderInline(admin.TabularInline):
     model = Shareholder
     fk_name = "company_id"
     extra = 1
+    readonly_fields = ["is_founder"]
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
@@ -20,6 +21,7 @@ class CompanyAdmin(admin.ModelAdmin):
     ordering = ["-created_at"]
     list_display_links = ["name", "code"]
     date_hierarchy = "established_date"
+    list_editable = ["type"]
 
     def owned_capital(self, obj):
         return sum(share.share_amount for share in obj.shareholder.all())
