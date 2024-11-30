@@ -6,6 +6,7 @@ from .forms import CompanyCreationForm, SearchForm, ShareholderEditForm
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.forms import modelformset_factory
+from django.contrib import messages
 
 # Create your views here.
 def company_create(request):
@@ -39,10 +40,15 @@ def company_detail(request, company_id):
 def search(request):
     form = SearchForm(request.GET or None)
     search_info = request.GET.get("search", "")
-
+    
     if form.is_valid():
         search_info = form.cleaned_data.get("search", "")
         companies_search = Company.objects.filter(Q(name__icontains=search_info) | Q(code__icontains=search_info))
+        length_companies_search = len(companies_search)
+        if companies_search:
+            messages.success(request, f"Success, found {length_companies_search} {'matches' if length_companies_search != 1 else 'match'}.") 
+        else:
+            messages.info(request, "No search results")
     else:
         companies_search = None
 
