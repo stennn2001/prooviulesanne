@@ -1,3 +1,4 @@
+from operator import is_
 from django.shortcuts import render
 from .models import Company, Shareholder, Person
 from django.http import JsonResponse
@@ -7,6 +8,7 @@ from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.forms import modelformset_factory
 from django.contrib import messages
+import json
 
 # Create your views here.
 def company_create(request):
@@ -16,11 +18,35 @@ def company_create(request):
 
     if request.method == "POST":
         shareholders_json_value = request.POST.get('shareholders_json', '').strip()
-        if not shareholders_json_value:
+        if not shareholders_json_value or shareholders_json_value == "[]" or shareholders_json_value == "null" or shareholders_json_value == "undefined":
             shareholders_json_errors.append("Shareholders cannot be empty.")
         form = CompanyCreationForm(request.POST)
+        print("FORM", form)
+        print("FORM ERRORS", form.errors)
         if form.is_valid():
             new_company = form.save()
+            for shareholder_data in json.loads(shareholders_json_value):
+                if shareholder_data['type'] == 'person':
+                        person = Person.objects.filter(id=shareholder_data['id']).first()
+                        if person:
+                            share = Shareholder.objects.create(
+                               shareholder_type="person",
+                               shareholder_person_id=person,
+                               is_founder=True,
+                               share_amount=shareholder_data['share_amount'],
+                               company_id=new_company
+                            )
+                elif shareholder_data['type'] == 'company':
+                    company = Company.objects.filter(id=shareholder_data['id']).first()
+                    if company:
+                        share = Shareholder.objects.create(
+                            company_id=new_company,
+                            shareholder_type="company",
+                            shareholder_company_id=new_company,
+                            is_founder=True,
+                            share_amount=shareholder_data['share_amount'],
+                        )
+            messages.success(request, "Company created successfully.")
             return redirect("company_detail", company_id=new_company.id)
     else:
         form = CompanyCreationForm()
@@ -86,7 +112,6 @@ def search_shareholders(request):
 def company_edit(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     shareholders = company.shareholder.all()
-    print(shareholders)
     ShareholderFormSet = modelformset_factory(Shareholder, form=ShareholderEditForm, extra=0)
     if request.method == 'POST':
         form = ShareholderEditForm(request.POST, instance=shareholders)

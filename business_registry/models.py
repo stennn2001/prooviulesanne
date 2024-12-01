@@ -13,14 +13,15 @@ class BusinessEntityType(models.TextChoices):
     FIE = "fie", "FIE"
 
 class Company(models.Model):
-    type = models.CharField(max_length=15, choices=BusinessEntityType.choices)
+    type = models.CharField(max_length=15, choices=BusinessEntityType.choices, null=False, blank=True)
     name = models.CharField(max_length=100, unique=True)
-    total_capital = models.PositiveIntegerField()
+    total_capital = models.PositiveIntegerField(null=False, blank=False)
     code = models.CharField(max_length=7, unique=True)
     established_date = models.DateField()
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return self.name
 

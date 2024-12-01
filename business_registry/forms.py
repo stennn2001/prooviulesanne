@@ -1,4 +1,5 @@
 
+import re
 from django import forms
 from .models import Company, Shareholder
 from django.utils.timezone import now
@@ -55,6 +56,7 @@ class CompanyCreationForm(forms.ModelForm):
         total_capital = self.cleaned_data.get("total_capital")
         if not total_capital >= 2500:
             raise forms.ValidationError("The total capital must be at least 2500 €.")
+        return total_capital
         
 class SearchForm(forms.Form):
     search = forms.CharField(max_length=100, min_length=1, help_text="Search by name or registry code.")
