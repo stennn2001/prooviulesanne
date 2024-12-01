@@ -38,7 +38,7 @@ def company_create(request):
         if form.is_valid() and not shareholders_json_errors:        
             new_company = form.save()
             for shareholder_data in json.loads(shareholders_json_value):       
-                if shareholder_data['type'] == 'person':
+                if shareholder_data['type'].lower() == 'person':
                         person = Person.objects.filter(id=shareholder_data['id']).first()
                         if person:
                             Shareholder.objects.create(
@@ -48,7 +48,7 @@ def company_create(request):
                                 is_founder=True,
                                 share_amount=shareholder_data['share_amount'],
                             )
-                elif shareholder_data['type'] == 'company':
+                elif shareholder_data['type'].lower() == 'company':
                     company = Company.objects.filter(id=shareholder_data['id']).first()
                     if company:
                         Shareholder.objects.create(
