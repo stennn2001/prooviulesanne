@@ -12,18 +12,29 @@ import json
 
 # Create your views here.
 def company_create(request):
-    print("KATSE", request.POST)
-    
     shareholders_json_errors = []
 
     if request.method == "POST":
         shareholders_json_value = request.POST.get('shareholders_json', '').strip()
+        
         if not shareholders_json_value or shareholders_json_value == "[]" or shareholders_json_value == "null" or shareholders_json_value == "undefined":
             shareholders_json_errors.append("Shareholders cannot be empty.")
+            
         form = CompanyCreationForm(request.POST)
+        
         if form.is_valid():
-            new_company = form.save()
+            total_share_amount = 0
+            new_company = form.save(commit=False)
             for shareholder_data in json.loads(shareholders_json_value):
+                share_amount = shareholder_data.get("share_amount", None)
+                if share_amount is not None:
+                    total_share_amount += int(share_amount)
+                     
+            if total_share_amount != new_company.total_capital:
+                shareholders_json_errors.append(f"Total share amount ({total_share_amount}) must be equal to the total capital ({new_company.total_capital}).")
+                
+            new_company = form.save()
+            for shareholder_data in json.loads(shareholders_json_value):       
                 if shareholder_data['type'] == 'person':
                         person = Person.objects.filter(id=shareholder_data['id']).first()
                         if person:
