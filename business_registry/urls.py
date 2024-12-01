@@ -14,7 +14,6 @@ urlpatterns = [
     # Company edit
     path("edit/<int:company_id>/", views.company_edit, name="company_edit"),
     
-    
-    # Search
+    # API Search
     path("shareholders/search/", views.search_shareholders, name="search_shareholders"),
 ]

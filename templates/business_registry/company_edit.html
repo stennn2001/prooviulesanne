@@ -1,26 +1,53 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 <div class="container mt-5">
-    <h1 class="h2 mb-3">Shareholders: {{ company.name }}</h2>
+    <h1 class="h2 mb-3">Shareholders: {{ company.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for form, shareholder in lists %}
+            <div class="mb-3 col-md-6 mb-2">
+                <div class="card">
+                    <div class="card-header">
+                        Shareholder
+                    </div>
 
-    <div>
-        {{ formset.management_form }}
+                    <div class="card-body">
+                        <p><strong>Name:</strong>
+                            {% if shareholder.shareholder_type == "person" %}
+                                <span><a class="link-dark" href="{% url 'person_detail' shareholder.shareholder_person_id.id %}">{{ shareholder.shareholder_person_id.first_name }} {{ shareholder.shareholder_person_id.last_name }}</a></span>
+                                <p><strong>Code:</strong><span>{{ shareholder.shareholder_person_id.code }}</span>
+                            {% else %}
+                                <span><a class="link-dark" href="{% url 'company_detail' shareholder.shareholder_company_id.id %}">{{ shareholder.shareholder_company_id.name }}</a></span>
+                                <p><strong>Code:</strong><span>{{ shareholder.shareholder_company_id.code }}</span>
+                            {% endif %}
+                        </p>
 
-        {% for form in formset %}
-            <div class="shareholder-form">
-                {{ form.as_p }}
+                        <div class="mb-2">
+                            <label for="{{ form.share_amount.id_for_label }}" class="form-label"><strong>Share amount (€):</strong></label>
+                            <input type="number" id="{{ form.share_amount.id_for_label }}" name="share_amount_{{ shareholder.id }}" 
+                                   value="{{ form.share_amount.value }}" class="form-control" />
+                            <div class="form-text">{{ form.share_amount.help_text }}</div>
+
+                            {% if form.share_amount.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.share_amount.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>            
+                    </div>
+                </div>
             </div>
         {% endfor %}
 
         <button type="submit" class="btn btn-primary">Save Changes</button>
-    </div>
+    </form>
 
     <div class="mt-2">
         <a href="{% url 'company_detail' company.id %}">Cancel</a>
     </div>
 </div>
 {% endblock %}
-
-

@@ -135,19 +135,31 @@ def search_shareholders(request):
 def company_edit(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     shareholders = company.shareholder.all()
-    ShareholderFormSet = modelformset_factory(Shareholder, form=ShareholderEditForm, extra=0)
+
     if request.method == 'POST':
-        form = ShareholderEditForm(request.POST, instance=shareholders)
-        formset = ShareholderFormSet(request.POST, queryset=company.shareholder.all())
-        if form.is_valid():
-            form.save()
-            return redirect('company_detail', company_id=company.id)
+        forms = []
+        for shareholder in shareholders:
+            post_data = request.POST.copy()
+            post_data['share_amount'] = request.POST.get(f'share_amount_{shareholder.id}', '')
+            form = ShareholderEditForm(post_data, instance=shareholder)
+            forms.append(form)
+
+        for form in forms:
+            if form.is_valid():
+                form.save()
+        return redirect('company_detail', company_id=company.id)
     else:
-        form = ShareholderEditForm(instance=company)
-        formset = ShareholderFormSet(queryset=company.shareholder.all())
+        forms = []
+        for shareholder in shareholders:
+            form = ShareholderEditForm(instance=shareholder)
+            forms.append(form)
+        lists = zip(forms, shareholders)
+
     context = {
-        'form': form,
+        'shareholders': shareholders,
         'company': company,
-        'formset': formset,
+        'forms': forms,
+        'lists': lists
     }
+
     return render(request, 'business_registry/company_edit.html', context)

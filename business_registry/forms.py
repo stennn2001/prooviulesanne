@@ -70,13 +70,11 @@ class SearchForm(forms.Form):
         return search
     
 class ShareholderEditForm(forms.ModelForm):
-    #company = forms.ModelChoiceField(queryset=Company.objects.filter(), widget=forms.Select(attrs={'class': 'form-control'}))
-    shareholder = forms.ModelChoiceField(queryset=Shareholder.objects.all(), label="", widget=forms.Select(attrs={'class': 'form-control',
-                                                                                                               #'disabled': True
-                                                                                                               }))
+    share_amount = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))
+
     class Meta:
         model = Shareholder
-        fields = ["shareholder", "share_amount"]
+        fields = [ "share_amount"]
         
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
