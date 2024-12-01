@@ -1,0 +1,509 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+          "username": "admin",
+          "email": "admin@example.com",
+          "is_staff": true,
+          "is_superuser": true,
+          "is_active": true,
+          "password": "pbkdf2_sha256$870000$MS9r05D8p8zSe6kGyf4R37$YbrERTECSu9aWaQjIdLdCBKDkrb0wRBNBTkcwf9I+dQ=",
+          "date_joined": "2024-11-30T00:00:00Z"
+        }
+      },
+    {
+        "model": "business_registry.company",
+        "pk": 1,
+        "fields": {
+            "name": "Tehnika Innovatsioonid OÜ",
+            "type": "oü",
+            "code": "1000001",
+            "established_date": "2010-05-15",
+            "total_capital": 500000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 2,
+        "fields": {
+            "name": "Roheline Lahendused OÜ",
+            "type": "oü",
+            "code": "1000002",
+            "established_date": "2015-11-20",
+            "total_capital": 750000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 3,
+        "fields": {
+            "name": "Loov Miele OÜ",
+            "type": "oü",
+            "code": "1000003",
+            "established_date": "2008-08-10",
+            "total_capital": 1200000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 4,
+        "fields": {
+            "name": "Digitaalne Dünaamika OÜ",
+            "type": "oü",
+            "code": "1000004",
+            "established_date": "2012-01-22",
+            "total_capital": 300000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 5,
+        "fields": {
+            "name": "Nutikas Lahendused OÜ",
+            "type": "oü",
+            "code": "1000005",
+            "established_date": "2016-06-30",
+            "total_capital": 1000000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 6,
+        "fields": {
+            "name": "Pilv Ettevõtted OÜ",
+            "type": "oü",
+            "code": "1000006",
+            "established_date": "2019-03-11",
+            "total_capital": 1500000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 7,
+        "fields": {
+            "name": "Innovatiivsed Kontseptsioonid OÜ",
+            "type": "oü",
+            "code": "1000007",
+            "established_date": "2013-09-01",
+            "total_capital": 850000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 8,
+        "fields": {
+            "name": "Tulevikutehnoloogiad OÜ",
+            "type": "oü",
+            "code": "1000008",
+            "established_date": "2011-07-14",
+            "total_capital": 200000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 9,
+        "fields": {
+            "name": "Roheline Energia Lahendused OÜ",
+            "type": "oü",
+            "code": "1000009",
+            "established_date": "2014-12-25",
+            "total_capital": 1200000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 10,
+        "fields": {
+            "name": "Järgmine Generatsioon OÜ",
+            "type": "oü",
+            "code": "1000010",
+            "established_date": "2017-05-18",
+            "total_capital": 500000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 11,
+        "fields": {
+            "name": "Loovtehnoloogiad OÜ",
+            "type": "oü",
+            "code": "1000011",
+            "established_date": "2018-11-04",
+            "total_capital": 800000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 12,
+        "fields": {
+            "name": "Täpse Analüütika OÜ",
+            "type": "oü",
+            "code": "1000012",
+            "established_date": "2019-01-30",
+            "total_capital": 600000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 13,
+        "fields": {
+            "name": "Tehnoloogia Tulevik OÜ",
+            "type": "oü",
+            "code": "1000013",
+            "established_date": "2020-02-22",
+            "total_capital": 950000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 14,
+        "fields": {
+            "name": "Kirgud Meeles OÜ",
+            "type": "oü",
+            "code": "1000014",
+            "established_date": "2011-10-16",
+            "total_capital": 400000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 15,
+        "fields": {
+            "name": "EkoTehnika OÜ",
+            "type": "oü",
+            "code": "1000015",
+            "established_date": "2015-08-03",
+            "total_capital": 300000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 16,
+        "fields": {
+            "name": "AI Lahendused OÜ",
+            "type": "oü",
+            "code": "1000016",
+            "established_date": "2016-09-27",
+            "total_capital": 550000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 17,
+        "fields": {
+            "name": "Tehnoloogia Ühendus OÜ",
+            "type": "oü",
+            "code": "1000017",
+            "established_date": "2018-04-14",
+            "total_capital": 950000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 18,
+        "fields": {
+            "name": "Mõtted Ees OÜ",
+            "type": "oü",
+            "code": "1000018",
+            "established_date": "2017-12-08",
+            "total_capital": 400000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 19,
+        "fields": {
+            "name": "Virtuaalsed Lahendused OÜ",
+            "type": "oü",
+            "code": "1000019",
+            "established_date": "2014-05-19",
+            "total_capital": 700000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.company",
+        "pk": 20,
+        "fields": {
+            "name": "Kogemus OÜ",
+            "type": "oü",
+            "code": "1000020",
+            "established_date": "2021-07-15",
+            "total_capital": 800000,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 1,
+        "fields": {
+            "first_name": "Mihkel",
+            "last_name": "Pärn",
+            "code": 1001,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 2,
+        "fields": {
+            "first_name": "Kadi",
+            "last_name": "Kask",
+            "code": 1002,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 3,
+        "fields": {
+            "first_name": "Jaanus",
+            "last_name": "Tamm",
+            "code": 1003,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 4,
+        "fields": {
+            "first_name": "Liis",
+            "last_name": "Mets",
+            "code": 1004,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 5,
+        "fields": {
+            "first_name": "Rasmus",
+            "last_name": "Jõgi",
+            "code": 1005,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 6,
+        "fields": {
+            "first_name": "Kristiina",
+            "last_name": "Roos",
+            "code": 1006,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 7,
+        "fields": {
+            "first_name": "Markus",
+            "last_name": "Lepik",
+            "code": 1007,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 8,
+        "fields": {
+            "first_name": "Maire",
+            "last_name": "Põld",
+            "code": 1008,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 9,
+        "fields": {
+            "first_name": "Tarmo",
+            "last_name": "Väli",
+            "code": 1009,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 10,
+        "fields": {
+            "first_name": "Piret",
+            "last_name": "Kivi",
+            "code": 1010,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 11,
+        "fields": {
+            "first_name": "Rainer",
+            "last_name": "Mägi",
+            "code": 1011,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 12,
+        "fields": {
+            "first_name": "Aet",
+            "last_name": "Vares",
+            "code": 1012,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 13,
+        "fields": {
+            "first_name": "Pille",
+            "last_name": "Lepp",
+            "code": 1013,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 14,
+        "fields": {
+            "first_name": "Indrek",
+            "last_name": "Uibo",
+            "code": 1014,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 15,
+        "fields": {
+            "first_name": "Katrin",
+            "last_name": "Ehasalu",
+            "code": 1015,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 16,
+        "fields": {
+            "first_name": "Heiki",
+            "last_name": "Tõnisson",
+            "code": 1016,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 17,
+        "fields": {
+            "first_name": "Marika",
+            "last_name": "Päts",
+            "code": 1017,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 18,
+        "fields": {
+            "first_name": "Maire",
+            "last_name": "Saare",
+            "code": 1018,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 19,
+        "fields": {
+            "first_name": "Andres",
+            "last_name": "Rahn",
+            "code": 1019,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.person",
+        "pk": 20,
+        "fields": {
+            "first_name": "Kristjan",
+            "last_name": "Saar",
+            "code": 1020,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 1,
+        "fields": {
+            "company_id": 1,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 1,
+            "is_founder": true,
+            "share_amount": 100,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    }
+]

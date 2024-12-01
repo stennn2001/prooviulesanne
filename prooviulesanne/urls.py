@@ -23,8 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Homepage
     path("", views.home, name="home"),
-    # Osaühing
-    path("asutamise_vorm/", include("business_registry.urls")),
-    # Otsing
-    path("otsing/", views.search, name="search"),
+    # Company
+    path("company/", include("business_registry.urls")),
+
 ]

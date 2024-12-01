@@ -1,35 +1,169 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Company, Shareholder
-from .forms import CompanyForm, ShareholderForm
-from django.forms import formset_factory
+from operator import is_
+from django.shortcuts import render
+from .models import Company, Shareholder, Person
+from django.http import JsonResponse
+from django.db.models import Q
+from .forms import CompanyCreationForm, SearchForm, ShareholderEditForm
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
+from django.forms import modelformset_factory
+from django.contrib import messages
+import json
 
+# Create your views here.
 
+def price(value):
+    return f"{value:,}".replace(",", " ") + " €"
 
-
-
-def company_create(request, pk=None):
-    ShareholderFormSet = formset_factory(
-    ShareholderForm)
+def company_create(request):
+    shareholders_json_errors = []
 
     if request.method == "POST":
-        company_form = CompanyForm(request.POST)
-        formset = ShareholderFormSet(request.POST)
+        shareholders_json_value = request.POST.get('shareholders_json', '').strip()
+        
+        if not shareholders_json_value or shareholders_json_value == "[]" or shareholders_json_value == "null" or shareholders_json_value == "undefined":
+            shareholders_json_errors.append("Shareholders cannot be empty.")
+            
+        form = CompanyCreationForm(request.POST)
 
-        if company_form.is_valid() and formset.is_valid():
-            company = company_form.save()
-            formset.instance = company
-            formset.save()
-            return redirect("search")  # Replace with your success URL
+        total_share_amount = 0
+        company_total_capital = request.POST.get("total_capital", None).strip()
+        for shareholder_data in json.loads(shareholders_json_value):
+                share_amount = shareholder_data.get("share_amount", None)
+                if share_amount is not None:
+                    total_share_amount += int(share_amount)
+        
+        if total_share_amount and company_total_capital.isdigit() and int(total_share_amount) != int(company_total_capital):
+            shareholders_json_errors.append(f"Total share amount ({price(int(total_share_amount))}) must be equal to the total capital ({price(int(company_total_capital))}).")
 
+        if form.is_valid() and not shareholders_json_errors:        
+            new_company = form.save()
+            for shareholder_data in json.loads(shareholders_json_value):       
+                if shareholder_data['type'].lower() == 'person':
+                        person = Person.objects.filter(id=shareholder_data['id']).first()
+                        if person:
+                            Shareholder.objects.create(
+                                company_id=new_company,
+                                shareholder_type="person",
+                                shareholder_person_id=person,
+                                is_founder=True,
+                                share_amount=shareholder_data['share_amount'],
+                            )
+                elif shareholder_data['type'].lower() == 'company':
+                    company = Company.objects.filter(id=shareholder_data['id']).first()
+                    if company:
+                        Shareholder.objects.create(
+                            company_id=new_company,
+                            shareholder_type="company",
+                            shareholder_company_id=company,
+                            is_founder=True,
+                            share_amount=shareholder_data['share_amount'],
+                        )
+            messages.success(request, f"Company {new_company.name} created successfully.")
+            return redirect("company_detail", company_id=new_company.id)
     else:
-        company_form = CompanyForm()
-        formset = ShareholderFormSet()
+        form = CompanyCreationForm()
+    context = {
+        "form": form,
+        "shareholders_json_errors": shareholders_json_errors
+    }
+    return render(request, 'business_registry/company_create.html', context)
 
-    return render(
-        request,
-        "business_registry/company_create.html",
-        {
-            "form": company_form,
-            "contact_form": formset,
-        },
-    )
+def company_detail(request, company_id):
+    company = Company.objects.get(pk=company_id)
+    context = {
+        "company": company,
+    }
+    return render(request, 'business_registry/company_detail.html', context)
+
+def person_detail(request, person_id):
+    person = get_object_or_404(Person, pk=person_id)
+    if person:
+        shareholder_company = Shareholder.objects.filter(shareholder_person_id=person).all()
+    context = {
+        "person": person,
+        "shareholder_company": shareholder_company
+    }
+    return render(request, 'business_registry/person_detail.html', context)
+
+def search(request):
+    form = SearchForm(request.GET or None)
+    search_info = request.GET.get("search", "")
+    
+    if form.is_valid():
+        search_info = form.cleaned_data.get("search", "")
+        companies_search = Company.objects.filter(Q(name__icontains=search_info) | Q(code__icontains=search_info))
+        person_search = Person.objects.filter(Q(first_name__icontains=search_info) | Q(last_name__icontains=search_info) | Q(code__icontains=search_info))
+        combined_search = list(companies_search) + list(person_search)
+        print("combined_search", combined_search)
+        total_length_search = len(combined_search)
+        if companies_search:
+            messages.success(request, f"Success, found {total_length_search} {'matches' if total_length_search != 1 else 'match'}.") 
+        else:
+            messages.info(request, "No search results")
+    else:
+        companies_search = None
+
+    context = {
+        "form": form,
+        "search_info": search_info,
+        "combined_search": combined_search
+    }
+    return render(request, 'business_registry/company_search.html', context)
+
+def search_shareholders(request):
+    search_phrase = request.GET.get("search", "").strip()
+    
+    if search_phrase:
+        company_results = Company.objects.filter(
+            Q(name__icontains=search_phrase) | Q(code__icontains=search_phrase)
+        ).values("id", "name", "code")
+        person_results = Person.objects.filter(
+            Q(first_name__icontains=search_phrase) | Q(last_name__icontains=search_phrase) | Q(code__icontains=search_phrase)
+            ).values("id", "first_name", "last_name", "code")
+        
+        for company in company_results:
+            company["type"] = "company"
+        for person in person_results:
+            person["type"] = "person"
+            
+        shareholders = list(company_results) + list(person_results)
+    else:
+        shareholders = []
+
+    return JsonResponse({
+        "shareholders": shareholders
+    })
+
+def company_edit(request, company_id):
+    company = get_object_or_404(Company, id=company_id)
+    shareholders = company.shareholder.all()
+
+    if request.method == 'POST':
+        forms = []
+        for shareholder in shareholders:
+            post_data = request.POST.copy()
+            post_data['share_amount'] = request.POST.get(f'share_amount_{shareholder.id}', '')
+            form = ShareholderEditForm(post_data, instance=shareholder)
+            forms.append(form)
+
+        for form in forms:
+            if form.is_valid():
+                form.save()
+        messages.success(request, f"Shareholders updated successfully.")
+        return redirect('company_detail', company_id=company.id)
+    else:
+        forms = []
+        for shareholder in shareholders:
+            form = ShareholderEditForm(instance=shareholder)
+            forms.append(form)
+        lists = zip(forms, shareholders)
+
+    context = {
+        'shareholders': shareholders,
+        'company': company,
+        'forms': forms,
+        'lists': lists
+    }
+
+    return render(request, 'business_registry/company_edit.html', context)

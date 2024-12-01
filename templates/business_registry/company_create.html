@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}Register Company{% endblock %}
+
 {% block content %}
 
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/jquery.formset.js' %}"></script>
-
 <div class="container mt-5">
-    <form method="post">
+
+    <form method="post" id="companyForm">
         {% csrf_token %}
         <h1 class="h2 mb-4">Register Company</h1>
 
@@ -25,119 +26,149 @@
                     <div class="form-text">{{ form.name.help_text }}</div>
 
                     {% if form.name.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.name.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
                 <div class="mb-2">
-                    <label for="{{ form.registration_code.id_for_label }}"
+                    <label for="{{ form.code.id_for_label }}"
                         class="form-label">Registration code:</label>
 
-                    {{ form.registration_code }}
+                    {{ form.code }}
 
-                    <div class="form-text">{{ form.registration_code.help_text }}</div>
+                    <div class="form-text">{{ form.code.help_text }}</div>
 
-                    {% if form.registration_code.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.registration_code.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                    {% if form.code.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.code.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
-                <div class="mb-2">
-                    <label for="{{ form.establishment_date.id_for_label }}"
+                <div class="mb-2 w-50">
+                    <label for="{{ form.established_date.id_for_label }}"
                         class="form-label">Establishment date:</label>
 
-                    {{ form.establishment_date }}
+                    {{ form.established_date }}
 
-                    <div class="form-text">{{ form.establishment_date.help_text }}</div>
+                    <div class="form-text">{{ form.established_date.help_text }}</div>
 
-                    {% if form.establishment_date.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.establishment_date.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                    {% if form.established_date.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.established_date.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
 
-                <div class="mb-2">
+                <div class="mb-2 w-50">
                     <label for="{{ form.total_capital.id_for_label }}"
-                        class="form-label">Total capital:</label>
+                        class="form-label">Total capital (€):</label>
 
                     {{ form.total_capital }}
 
                     <div class="form-text">{{ form.total_capital.help_text }}</div>
 
                     {% if form.total_capital.errors %}
-                    <div class="invalid-feedback">
-                        {% for error in form.total_capital.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.total_capital.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
             </div>
 
         </div>
+        <h2 class="h4">Shareholders</h2>
 
-        <fieldset>
-            <h2>Shareholders</h2>
-
-            
-<!-- Add the management form and formset for shareholders -->
-            {{ contact_form.management_form }}
-            <div class="link-formset">
-                {% for contact in contact_form %}
-                    <div class="form-container">
-                        {{ contact.as_p }}
-                    </div>
+        {% if shareholders_json_errors %}
+            <div class="alert alert-danger mt-3" role="alert">
+                {% for error in shareholders_json_errors %}
+                    <div>{{ error }}</div>
                 {% endfor %}
             </div>
+        {% endif %}
 
-            <!-- Button to create a new shareholder -->
-            <button type="button" class="btn btn-secondary" id="create-new-shareholder">Create New Shareholder</button>
-        </fieldset>
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
 
-        <button type="submit" class="btn btn-success">Save</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Add shareholder:</label>
+                        <input type="text" class="form-control"
+                            id="shareholderSearchInput"
+                            placeholder="Company or Person name/code" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="button" id="addShareholder"
+                            class="btn btn-secondary w-100">Add</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <ul id="shareholders" class="list-group mt-3">
+            <li class="list-group-item">
+                <div class="row align-items-center gx-2 gy-2">
+
+                    <div class="col-12 col-md-3 fw-bold" data-shareholder-name>
+                        Firstname Lastname
+                    </div>
+
+                    <div class="col-6 col-md-2 text-muted small" data-shareholder-type>
+                        Person
+                    </div>
+
+                    <div class="col-6 col-md-2 text-muted small" data-shareholder-code>
+                        12345678
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <input type="number" 
+                               min="1" 
+                               class="form-control form-control-sm" 
+                               placeholder="€" 
+                               data-shareholder-share-amount />
+                    </div>
+
+                    <div class="col-6 col-md-2 text-end">
+                        <button type="button" 
+                                class="btn btn-danger btn-sm w-100" 
+                                data-shareholder-remove>Remove</button>
+                    </div>
+                </div>
+
+                <input type="hidden" data-shareholder-type />
+                <input type="hidden" data-shareholder-id />
+            </li>
+        </ul>
+
+        <input type="hidden" id="shareholdersInput" name="shareholders_json" value="{{ request.POST.shareholders_json }}" />
+
+        <button type="button"
+            id="submitForm"
+            class="btn btn-primary mt-4">Register</button>
     </form>
 
-    <!-- Hidden container where the form will be injected -->
-    <div id="new-shareholder-container" style="display: none;">
-        <form method="post">
-            {% csrf_token %}
-            <h3>Create New Shareholder</h3>
-            {{ create_shareholder.as_p }}
-            <button type="submit" class="btn btn-success">Create Shareholder</button>
-        </form>
-    </div>
 </div>
 
-<script type="text/javascript">
-    $(function() {
-        // Initialize the formset plugin
-        $('.link-formset').formset({
-            addText: 'Add Contact',
-            deleteText: 'Remove Contact',
-            formCssClass: 'dynamic-formset'
-        });
-
-
-        // Handle "Create New Shareholder" click
-        $('#create-new-shareholder').click(function() {
-            // Show the form to create a new shareholder
-            $('#new-shareholder-container').show();  // Show the hidden form container
-        });
-    });
+<script>
+    const SHAREHOLDERS_SEARCH_URL = "http://127.0.0.1:8000/company/shareholders/search/";
 </script>
 
-{% endblock %}
+<script src="{% static 'js/company_create.js' %}"></script>
 
+{% endblock %}
 
 
