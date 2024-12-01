@@ -121,22 +121,19 @@
         <ul id="shareholders" class="list-group mt-3">
             <li class="list-group-item">
                 <div class="row align-items-center gx-2 gy-2">
-                    <!-- Shareholder Name -->
+
                     <div class="col-12 col-md-3 fw-bold" data-shareholder-name>
                         Firstname Lastname
                     </div>
-        
-                    <!-- Shareholder Type -->
+
                     <div class="col-6 col-md-2 text-muted small" data-shareholder-type>
                         Person
                     </div>
-        
-                    <!-- Shareholder Code -->
+
                     <div class="col-6 col-md-2 text-muted small" data-shareholder-code>
                         12345678
                     </div>
-        
-                    <!-- Shareholder Shares Input -->
+
                     <div class="col-6 col-md-3">
                         <input type="number" 
                                min="1" 
@@ -144,16 +141,14 @@
                                placeholder="Shares" 
                                data-shareholder-share-amount />
                     </div>
-        
-                    <!-- Remove Button -->
+
                     <div class="col-6 col-md-2 text-end">
                         <button type="button" 
                                 class="btn btn-danger btn-sm w-100" 
                                 data-shareholder-remove>Remove</button>
                     </div>
                 </div>
-        
-                <!-- Hidden inputs -->
+
                 <input type="hidden" data-shareholder-type />
                 <input type="hidden" data-shareholder-id />
             </li>
