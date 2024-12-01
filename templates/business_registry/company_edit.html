@@ -22,6 +22,7 @@
                                 <span><a class="link-dark" href="{% url 'company_detail' shareholder.shareholder_company_id.id %}">{{ shareholder.shareholder_company_id.name }}</a></span>
                                 <p><strong>Code:</strong><span>{{ shareholder.shareholder_company_id.code }}</span>
                             {% endif %}
+                            <p><strong>Founder:</strong>{% if shareholder.is_founder %}Yes{% else %}No{% endif %}</span></p>
                         </p>
 
                         <div class="mb-2">
