@@ -58,7 +58,7 @@ def company_create(request):
                             is_founder=True,
                             share_amount=shareholder_data['share_amount'],
                         )
-            messages.success(request, "Company created successfully.")
+            messages.success(request, f"Company {new_company.name} created successfully.")
             return redirect("company_detail", company_id=new_company.id)
     else:
         form = CompanyCreationForm()
