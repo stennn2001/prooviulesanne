@@ -11,6 +11,10 @@ from django.contrib import messages
 import json
 
 # Create your views here.
+
+def price(value):
+    return f"{value:,}".replace(",", " ") + " €"
+
 def company_create(request):
     shareholders_json_errors = []
 
@@ -21,29 +25,28 @@ def company_create(request):
             shareholders_json_errors.append("Shareholders cannot be empty.")
             
         form = CompanyCreationForm(request.POST)
-        
-        if form.is_valid():
-            total_share_amount = 0
-            new_company = form.save(commit=False)
-            for shareholder_data in json.loads(shareholders_json_value):
+
+        total_share_amount = 0
+        company_total_capital = request.POST.get("total_capital", None).strip()
+        for shareholder_data in json.loads(shareholders_json_value):
                 share_amount = shareholder_data.get("share_amount", None)
                 if share_amount is not None:
                     total_share_amount += int(share_amount)
-                     
-            if total_share_amount != new_company.total_capital:
-                shareholders_json_errors.append(f"Total share amount ({total_share_amount}) must be equal to the total capital ({new_company.total_capital}).")
-                
+        if int(total_share_amount) != int(company_total_capital):
+                shareholders_json_errors.append(f"Total share amount ({price(int(total_share_amount))}) must be equal to the total capital ({price(int(company_total_capital))}).")
+
+        if form.is_valid() and not shareholders_json_errors:        
             new_company = form.save()
             for shareholder_data in json.loads(shareholders_json_value):       
                 if shareholder_data['type'] == 'person':
                         person = Person.objects.filter(id=shareholder_data['id']).first()
                         if person:
                             Shareholder.objects.create(
-                               shareholder_type="person",
-                               shareholder_person_id=person,
-                               is_founder=True,
-                               share_amount=shareholder_data['share_amount'],
-                               company_id=new_company
+                                company_id=new_company,
+                                shareholder_type="person",
+                                shareholder_person_id=person,
+                                is_founder=True,
+                                share_amount=shareholder_data['share_amount'],
                             )
                 elif shareholder_data['type'] == 'company':
                     company = Company.objects.filter(id=shareholder_data['id']).first()
@@ -51,7 +54,7 @@ def company_create(request):
                         Shareholder.objects.create(
                             company_id=new_company,
                             shareholder_type="company",
-                            shareholder_company_id=new_company,
+                            shareholder_company_id=company,
                             is_founder=True,
                             share_amount=shareholder_data['share_amount'],
                         )
