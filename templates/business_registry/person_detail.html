@@ -54,7 +54,9 @@
                             {% for holder in shareholder_company %}
                             <tr>
                                 <td>
-                                    {{ holder.company_id.name }}
+                                    <i class="bi bi-building text-primary pe-1"></i>
+                                        <span>
+                                            <a class="link-dark" href="{% url 'company_detail' holder.company_id.id %}">{{ holder.company_id.name }}</a></span>
                                 </td>
                                 <td>{{ holder.share_amount|price}}</td>
                                 <td>{% if holder.is_founder %}Yes{% else %}No{% endif %}</td>
