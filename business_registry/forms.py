@@ -8,16 +8,16 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 class CompanyCreationForm(forms.ModelForm):
     established_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date",
                                                                      "class": "form-control",}),
-                                                              help_text="Date for the establishment of the company.")
+                                                              help_text="Date for the establishment of the company."
+                                                              )
     code = forms.CharField(
                             widget=forms.NumberInput(attrs={"type": "number",
                                                            "class": "form-control",
                                                            "maxlength": "7"}),
-                              validators=[MaxLengthValidator(7,
-                                message="The registration code must not exceed 7 numbers. You entered %(show_value)s number.")],
-                              help_text="The registration code must be exactly 7 numbers."
+                            validators=[MaxLengthValidator(7,
+                            message="The registration code must not exceed 7 numbers. You entered %(show_value)s number.")],
+                            help_text="The registration code must be exactly 7 numbers."
                               )
-
     name = forms.CharField(
                             widget=forms.TextInput(attrs={"type": "text", "class": "form-control"}),
                             validators=[
@@ -38,7 +38,8 @@ class CompanyCreationForm(forms.ModelForm):
                 field.widget.attrs["class"] = "form-control"
             
     def clean_code(self):
-        code = self.cleaned_data['code']
+        code = self.cleaned_data.get('code')
+        print("codeY",code)
         if not code.isdigit():
             raise forms.ValidationError("The registration code must contain only digits.")
         elif len(code) != 7:

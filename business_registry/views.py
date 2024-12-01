@@ -32,8 +32,9 @@ def company_create(request):
                 share_amount = shareholder_data.get("share_amount", None)
                 if share_amount is not None:
                     total_share_amount += int(share_amount)
-        if int(total_share_amount) != int(company_total_capital):
-                shareholders_json_errors.append(f"Total share amount ({price(int(total_share_amount))}) must be equal to the total capital ({price(int(company_total_capital))}).")
+        
+        if total_share_amount and company_total_capital.isdigit() and int(total_share_amount) != int(company_total_capital):
+            shareholders_json_errors.append(f"Total share amount ({price(int(total_share_amount))}) must be equal to the total capital ({price(int(company_total_capital))}).")
 
         if form.is_valid() and not shareholders_json_errors:        
             new_company = form.save()
