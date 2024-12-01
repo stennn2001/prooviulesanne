@@ -76,6 +76,16 @@ def company_detail(request, company_id):
     }
     return render(request, 'business_registry/company_detail.html', context)
 
+def person_detail(request, person_id):
+    person = get_object_or_404(Person, pk=person_id)
+    if person:
+        shareholder_company = Shareholder.objects.filter(shareholder_person_id=person).all()
+    context = {
+        "person": person,
+        "shareholder_company": shareholder_company
+    }
+    return render(request, 'business_registry/person_detail.html', context)
+
 def search(request):
     form = SearchForm(request.GET or None)
     search_info = request.GET.get("search", "")
