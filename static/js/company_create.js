@@ -35,7 +35,6 @@ $(function () {
     }
 
     function addShareholder() {
-
         if (!shareholders.some(shareholder => shareholder.id === selectedShareholder.id && shareholder.type === selectedShareholder.type)) {
             shareholders.push(selectedShareholder);
         }
@@ -53,11 +52,7 @@ $(function () {
     }
 
     function disableShareholderForm(isDisabled) {
-        if (isDisabled) {
-            $('#addShareholder').prop('disabled', true);
-        } else {
-            $('#addShareholder').prop('disabled', false);
-        }
+        $('#addShareholder').prop('disabled', isDisabled);
     }
 
     function showShareholderRows(shareholders) {
@@ -97,7 +92,6 @@ $(function () {
             const updatedShareAmount = $(this).val();
 
             const parentContainer = $(this).closest('li');
-
             const shareholderId = parentContainer.find('input[data-shareholder-id]').val();
             const shareholderType = parentContainer.find('input[data-shareholder-type]').val();
 
@@ -106,12 +100,11 @@ $(function () {
         });
 
         shareholderRow.find('button[data-shareholder-remove]').click(function () {
-            if(!confirm('Are you sure you want to remove this shareholder?')) {
+            if (!confirm('Are you sure you want to remove this shareholder?')) {
                 return;
             }
 
             const parentContainer = $(this).closest('li');
-
             const shareholderId = parentContainer.find('input[data-shareholder-id]').val();
             const shareholderType = parentContainer.find('input[data-shareholder-type]').val();
 
@@ -120,8 +113,6 @@ $(function () {
         });
 
         shareholdersContainer.append(shareholderRow);
-
-        // console.log(shareholder.html());
     }
 
     function removeShareholderRows() {
@@ -137,16 +128,27 @@ $(function () {
                     search: request.term
                 },
                 success: function (data) {
-                    // Map the API response to a format expected by jQuery UI autocomplete
                     const formattedData = data.shareholders.map(function (item) {
-                        return {
-                            label: `${item.name} (${item.registration_code})`, // What the user sees in the dropdown
-                            value: item.name, // What gets entered into the input
-                            id: item.id, // Additional data you might need
-                            name: item.name,
-                            type: 'company',
-                            code: item.registration_code,
-                        };
+                        if (item.type == 'company') {
+                            return {
+                                label: `${item.name} (${item.code})`,
+                                value: item.name,
+                                id: item.id,
+                                name: item.name,
+                                type: 'company',
+                                code: item.code,
+                            };
+                        } else {
+                            return {
+                                label: `${item.first_name} ${item.last_name} (${item.code})`,
+                                value: item.first_name + ' ' + item.last_name,
+                                id: item.id,
+                                first_name: item.first_name,
+                                last_name: item.last_name,
+                                type: 'person',
+                                code: item.code,
+                            };
+                        }
                     });
                     response(formattedData);
                 }
@@ -162,7 +164,7 @@ $(function () {
                 'type': ui.item.type,
                 'name': ui.item.value,
                 'code': ui.item.code,
-                'share_amount': null,
+                'share_amount': null,  // Default share amount
             };
 
             disableShareholderForm(false);

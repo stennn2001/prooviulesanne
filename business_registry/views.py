@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Company, Shareholder
+from .models import Company, Shareholder, Person
 from django.http import JsonResponse
 from django.db.models import Q
 from .forms import CompanyCreationForm, SearchForm, ShareholderEditForm
@@ -63,14 +63,24 @@ def search_shareholders(request):
     search_phrase = request.GET.get("search", "").strip()
     
     if search_phrase:
-        search_result = Company.objects.filter(
-            Q(name__icontains=search_phrase) | Q(registration_code__icontains=search_phrase)
-        ).values("id", "name", "registration_code")
+        company_results = Company.objects.filter(
+            Q(name__icontains=search_phrase) | Q(code__icontains=search_phrase)
+        ).values("id", "name", "code")
+        person_results = Person.objects.filter(
+            Q(first_name__icontains=search_phrase) | Q(last_name__icontains=search_phrase) | Q(code__icontains=search_phrase)
+            ).values("id", "first_name", "last_name", "code")
+        
+        for company in company_results:
+            company["type"] = "company"
+        for person in person_results:
+            person["type"] = "person"
+            
+        shareholders = list(company_results) + list(person_results)
     else:
-        search_result = []
+        shareholders = []
 
     return JsonResponse({
-        "shareholders": list(search_result)
+        "shareholders": shareholders
     })
 
 def company_edit(request, company_id):
