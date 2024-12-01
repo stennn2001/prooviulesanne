@@ -21,8 +21,6 @@ def company_create(request):
         if not shareholders_json_value or shareholders_json_value == "[]" or shareholders_json_value == "null" or shareholders_json_value == "undefined":
             shareholders_json_errors.append("Shareholders cannot be empty.")
         form = CompanyCreationForm(request.POST)
-        print("FORM", form)
-        print("FORM ERRORS", form.errors)
         if form.is_valid():
             new_company = form.save()
             for shareholder_data in json.loads(shareholders_json_value):
