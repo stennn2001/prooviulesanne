@@ -93,9 +93,12 @@ def search(request):
     if form.is_valid():
         search_info = form.cleaned_data.get("search", "")
         companies_search = Company.objects.filter(Q(name__icontains=search_info) | Q(code__icontains=search_info))
-        length_companies_search = len(companies_search)
+        person_search = Person.objects.filter(Q(first_name__icontains=search_info) | Q(last_name__icontains=search_info) | Q(code__icontains=search_info))
+        combined_search = list(companies_search) + list(person_search)
+        print("combined_search", combined_search)
+        total_length_search = len(combined_search)
         if companies_search:
-            messages.success(request, f"Success, found {length_companies_search} {'matches' if length_companies_search != 1 else 'match'}.") 
+            messages.success(request, f"Success, found {total_length_search} {'matches' if total_length_search != 1 else 'match'}.") 
         else:
             messages.info(request, "No search results")
     else:
@@ -104,7 +107,7 @@ def search(request):
     context = {
         "form": form,
         "search_info": search_info,
-        "companies_search": companies_search
+        "combined_search": combined_search
     }
     return render(request, 'business_registry/company_search.html', context)
 
@@ -147,6 +150,7 @@ def company_edit(request, company_id):
         for form in forms:
             if form.is_valid():
                 form.save()
+        messages.success(request, f"Shareholders updated successfully.")
         return redirect('company_detail', company_id=company.id)
     else:
         forms = []

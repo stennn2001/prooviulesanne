@@ -12,24 +12,34 @@
     </div>
 
     <div>
-        {% if companies_search %}
-        {% for company in companies_search %}
-        <div class="row border-bottom">
-
-            <div class="col mt-3">
-                <h3 class="text-primary"><a
-                        href="{% url 'company_detail' company.id %}">{{ company.name }}</a></h3>
-                <p>Reg: {{ company.code }}</p>
+        {% if combined_search %}
+            {% for search in combined_search %}
+            <div class="row border-bottom">
+                <div class="col mt-3">
+                    <h3 class="text-primary">
+                        <a
+                            {% if search.name %}
+                                href="{% url 'company_detail' search.id %}"
+                            {% else %}
+                                href="{% url 'person_detail' search.id %}"
+                            {% endif %}
+                        >
+                            {% if search.name %}
+                                {{ search.name }}
+                            {% else %}
+                                {{ search.first_name }} {{ search.last_name }}
+                            {% endif %}
+                        </a>
+                    </h3>
+                    <p>Reg: {{ search.code }}</p>
+                </div>
             </div>
-
-        </div>
-        {% endfor %}
+            {% endfor %}
         {% else %}
-        <div class="alert alert-warning mt-3" role="alert">
-            No search results
-        </div>
+            <div class="alert alert-warning mt-3" role="alert">
+                No search results
+            </div>
         {% endif %}
-
     </div>
 
 </div>
