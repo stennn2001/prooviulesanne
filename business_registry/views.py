@@ -29,7 +29,7 @@ def company_create(request):
                 if shareholder_data['type'] == 'person':
                         person = Person.objects.filter(id=shareholder_data['id']).first()
                         if person:
-                            share = Shareholder.objects.create(
+                            Shareholder.objects.create(
                                shareholder_type="person",
                                shareholder_person_id=person,
                                is_founder=True,
@@ -39,7 +39,7 @@ def company_create(request):
                 elif shareholder_data['type'] == 'company':
                     company = Company.objects.filter(id=shareholder_data['id']).first()
                     if company:
-                        share = Shareholder.objects.create(
+                        Shareholder.objects.create(
                             company_id=new_company,
                             shareholder_type="company",
                             shareholder_company_id=new_company,
