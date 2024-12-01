@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex flex-column align-items-center mt-4">
+    <div class="alert alert-danger text-center w-50" role="alert">
+        Oops, something went wrong.
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-secondary w-50">Back to homepage</a>
+</div>
+{% endblock %}

@@ -13,14 +13,7 @@
 
                     <form method="GET" action="{% url 'search' %}">
 
-                        <div class="mb-3">
-                            <input type="text" name="search" class="form-control" id="businesSearchInput" placeholder="" />
-
-                            <div id="businesSearchInput" class="form-text">You can search by name or registry code.</div>
-                        </div>
-
-                        <button type="submit"
-                            class="btn btn-primary">Search</button>
+                        {% include 'includes/search_form.html' %}
 
                     </form>
 
@@ -35,8 +28,7 @@
 
                 <div class="card-body">
                     <h5 class="card-title">Register new company</h5>
-                    <p class="card-text">With supporting text below as a natural
-                        lead-in to additional content.</p>
+                    <p class="card-text">Create a new company entry in the business registry.</p>
                     <div class="text-end">
                         <a href="{% url 'company_create' %}" class="btn btn-secondary px-5">Start</a>
                     </div>
