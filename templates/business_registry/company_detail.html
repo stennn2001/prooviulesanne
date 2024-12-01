@@ -59,7 +59,8 @@
                                         <span>{{ holder.shareholder_person_id.first_name }} {{ holder.shareholder_person_id.last_name }}</span>
                                     {% else %}
                                         <i class="bi bi-building text-primary pe-1"></i>
-                                        <span>{{ holder.shareholder_company_id.name }} ({{ holder.shareholder_company_id.code }})</span>
+                                        <span>
+                                            <a href="{% url 'company_detail' holder.shareholder_company_id.id %}">{{ holder.shareholder_company_id.name }} ({{ holder.shareholder_company_id.code }})</a></span>
                                     {% endif %}
                                 </td>
                                 <td>{{ holder.share_amount|price }}</td>
