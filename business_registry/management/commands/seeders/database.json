@@ -505,5 +505,243 @@
             "created_at": "2024-11-27T10:00:00Z",
             "updated_at": "2024-11-27T10:00:00Z"
         }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 2,
+        "fields": {
+            "company_id": 2,
+            "shareholder_type": "company",
+            "shareholder_company_id": 1,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 150,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 3,
+        "fields": {
+            "company_id": 3,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 2,
+            "is_founder": false,
+            "share_amount": 75,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 101,
+        "fields": {
+            "company_id": 3,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 1,
+            "is_founder": false,
+            "share_amount": 80,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 102,
+        "fields": {
+            "company_id": 3,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 2,
+            "is_founder": true,
+            "share_amount": 75,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 103,
+        "fields": {
+            "company_id": 8,
+            "shareholder_type": "company",
+            "shareholder_company_id": 4,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 90,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 104,
+        "fields": {
+            "company_id": 8,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 3,
+            "is_founder": true,
+            "share_amount": 50,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 105,
+        "fields": {
+            "company_id": 11,
+            "shareholder_type": "company",
+            "shareholder_company_id": 5,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 65,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 106,
+        "fields": {
+            "company_id": 9,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 4,
+            "is_founder": false,
+            "share_amount": 70,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 107,
+        "fields": {
+            "company_id": 15,
+            "shareholder_type": "company",
+            "shareholder_company_id": 6,
+            "shareholder_person_id": null,
+            "is_founder": true,
+            "share_amount": 55,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 108,
+        "fields": {
+            "company_id": 20,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 5,
+            "is_founder": false,
+            "share_amount": 60,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 109,
+        "fields": {
+            "company_id": 18,
+            "shareholder_type": "company",
+            "shareholder_company_id": 7,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 85,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 110,
+        "fields": {
+            "company_id": 17,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 6,
+            "is_founder": true,
+            "share_amount": 95,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 111,
+        "fields": {
+            "company_id": 16,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 7,
+            "is_founder": false,
+            "share_amount": 40,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 112,
+        "fields": {
+            "company_id": 15,
+            "shareholder_type": "company",
+            "shareholder_company_id": 8,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 50,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 113,
+        "fields": {
+            "company_id": 14,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 8,
+            "is_founder": true,
+            "share_amount": 90,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 114,
+        "fields": {
+            "company_id": 13,
+            "shareholder_type": "company",
+            "shareholder_company_id": 9,
+            "shareholder_person_id": null,
+            "is_founder": false,
+            "share_amount": 65,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
+    },
+    {
+        "model": "business_registry.shareholder",
+        "pk": 115,
+        "fields": {
+            "company_id": 12,
+            "shareholder_type": "person",
+            "shareholder_company_id": null,
+            "shareholder_person_id": 9,
+            "is_founder": false,
+            "share_amount": 85,
+            "created_at": "2024-11-27T10:00:00Z",
+            "updated_at": "2024-11-27T10:00:00Z"
+        }
     }
 ]
