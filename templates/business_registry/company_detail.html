@@ -76,14 +76,14 @@
                         </tbody>
                     </table>
 
+                    <a href="{% url 'company_edit' company.id %}"
+                        class="btn btn-secondary w-100">Manage Shareholders</a>
+                        
                     {% else %}
                     <div class="alert alert-warning text-center" role="alert">
                         No shareholders found
                     </div>
                     {% endif %}
-
-                    <a href="{% url 'company_edit' company.id %}"
-                        class="btn btn-secondary w-100">Manage Shareholders</a>
 
                 </div>
             </div>
