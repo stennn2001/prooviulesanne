@@ -4,10 +4,12 @@
 
 Follow the steps below to set up and run the project on **Windows**.
 
+
 ### Requirements
 
 - Python installed on your system.
 - Django installed via `requirements.txt`.
+- **Database** : Refer to `database.schema.png` for the database structure.
 
 ### Installation Steps
 
