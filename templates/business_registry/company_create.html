@@ -26,11 +26,11 @@
                     <div class="form-text">{{ form.name.help_text }}</div>
 
                     {% if form.name.errors %}
-                        <div class="invalid-feedback d-block">
-                            {% for error in form.name.errors %}
-                            <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.name.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
 
@@ -43,11 +43,11 @@
                     <div class="form-text">{{ form.code.help_text }}</div>
 
                     {% if form.code.errors %}
-                        <div class="invalid-feedback d-block">
-                            {% for error in form.code.errors %}
-                            <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.code.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
 
@@ -60,11 +60,11 @@
                     <div class="form-text">{{ form.established_date.help_text }}</div>
 
                     {% if form.established_date.errors %}
-                        <div class="invalid-feedback d-block">
-                            {% for error in form.established_date.errors %}
-                            <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.established_date.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
 
@@ -77,11 +77,11 @@
                     <div class="form-text">{{ form.total_capital.help_text }}</div>
 
                     {% if form.total_capital.errors %}
-                        <div class="invalid-feedback d-block">
-                            {% for error in form.total_capital.errors %}
-                            <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.total_capital.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -90,11 +90,11 @@
         <h2 class="h4">Shareholders</h2>
 
         {% if shareholders_json_errors %}
-            <div class="alert alert-danger mt-3" role="alert">
-                {% for error in shareholders_json_errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
-            </div>
+        <div class="alert alert-danger mt-3" role="alert">
+            {% for error in shareholders_json_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
         {% endif %}
 
         <div class="card mb-3">
@@ -126,26 +126,28 @@
                         Firstname Lastname
                     </div>
 
-                    <div class="col-6 col-md-2 text-muted small text-capitalize" data-shareholder-type>
+                    <div class="col-6 col-md-2 text-muted small text-capitalize"
+                        data-shareholder-type>
                         Person
                     </div>
 
-                    <div class="col-6 col-md-2 text-muted small" data-shareholder-code>
+                    <div class="col-6 col-md-2 text-muted small"
+                        data-shareholder-code>
                         12345678
                     </div>
 
                     <div class="col-6 col-md-3">
-                        <input type="number" 
-                               min="1" 
-                               class="form-control form-control-sm" 
-                               placeholder="€" 
-                               data-shareholder-share-amount />
+                        <input type="number"
+                            min="1"
+                            class="form-control form-control-sm"
+                            placeholder="€"
+                            data-shareholder-share-amount />
                     </div>
 
                     <div class="col-6 col-md-2 text-end">
-                        <button type="button" 
-                                class="btn btn-danger btn-sm w-100" 
-                                data-shareholder-remove>Remove</button>
+                        <button type="button"
+                            class="btn btn-danger btn-sm w-100"
+                            data-shareholder-remove>Remove</button>
                     </div>
                 </div>
 
@@ -154,7 +156,8 @@
             </li>
         </ul>
 
-        <input type="hidden" id="shareholdersInput" name="shareholders_json" value="{{ request.POST.shareholders_json }}" />
+        <input type="hidden" id="shareholdersInput" name="shareholders_json"
+            value="{{ request.POST.shareholders_json }}" />
 
         <button type="button"
             id="submitForm"
@@ -170,5 +173,3 @@
 <script src="{% static 'js/company_create.js' %}"></script>
 
 {% endblock %}
-
-

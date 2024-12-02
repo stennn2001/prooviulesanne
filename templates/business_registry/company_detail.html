@@ -20,9 +20,9 @@
                 </div>
 
                 <div class="card-body">
-                   
+
                     <p><strong>Name:</strong> {{ company.name }}</p>
-                    <p><strong>Registration Code:</strong> {{ company.code }}</p>            
+                    <p><strong>Registration Code:</strong> {{ company.code }}</p>
                     <p><strong>Established Date:</strong> {{ company.established_date|date:"F j, Y" }}</p>
                     <p><strong>Total Capital:</strong> {{ company.total_capital|price }}</p>
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="col-md-6">
-    
+
             <div class="card">
 
                 <div class="card-header">
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="card-body">
-                    
+
                     {% if company.shareholder.all %}
                     <table class="table">
                         <thead>
@@ -55,12 +55,18 @@
                             <tr>
                                 <td>
                                     {% if holder.shareholder_type == "person" %}
-                                        <i class="bi bi-person text-primary pe-1"></i>
-                                        <span><a class="link-dark" href="{% url 'person_detail' holder.shareholder_person_id.id %}">{{ holder.shareholder_person_id.first_name }} {{ holder.shareholder_person_id.last_name }}</a></span>
+                                    <i
+                                        class="bi bi-person text-primary pe-1"></i>
+                                    <span><a class="link-dark"
+                                            href="{% url 'person_detail' holder.shareholder_person_id.id %}">
+                                            {{ holder.shareholder_person_id.first_name }} {{ holder.shareholder_person_id.last_name }}</a></span>
                                     {% else %}
-                                        <i class="bi bi-building text-primary pe-1"></i>
-                                        <span>
-                                            <a class="link-dark" href="{% url 'company_detail' holder.shareholder_company_id.id %}">{{ holder.shareholder_company_id.name }} ({{ holder.shareholder_company_id.code }})</a></span>
+                                    <i
+                                        class="bi bi-building text-primary pe-1"></i>
+                                    <span>
+                                        <a class="link-dark"
+                                            href="{% url 'company_detail' holder.shareholder_company_id.id %}">
+                                            {{ holder.shareholder_company_id.name }} ({{ holder.shareholder_company_id.code }})</a></span>
                                     {% endif %}
                                 </td>
                                 <td>{{ holder.share_amount|price }}</td>
@@ -71,12 +77,13 @@
                     </table>
 
                     {% else %}
-                        <div class="alert alert-warning text-center" role="alert">
-                            No shareholders found
-                        </div>
+                    <div class="alert alert-warning text-center" role="alert">
+                        No shareholders found
+                    </div>
                     {% endif %}
 
-                    <a href="{% url 'company_edit' company.id %}" class="btn btn-secondary w-100">Manage Shareholders</a>
+                    <a href="{% url 'company_edit' company.id %}"
+                        class="btn btn-secondary w-100">Manage Shareholders</a>
 
                 </div>
             </div>
