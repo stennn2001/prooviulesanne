@@ -4,7 +4,6 @@
 
 Follow the steps below to set up and run the project on **Windows**.
 
-
 ### Requirements
 
 - Python installed on your system.
@@ -12,6 +11,8 @@ Follow the steps below to set up and run the project on **Windows**.
 - **Database** : Refer to `database.schema.png` for the database structure.
 
 ### Installation Steps
+
+Git clone and then navigato to root folder where 'manage.py' exists.
 
 1. **Create and activate a virtual environment**:
 
