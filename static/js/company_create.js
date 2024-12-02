@@ -135,7 +135,7 @@ $(function () {
                                 value: item.name,
                                 id: item.id,
                                 name: item.name,
-                                type: 'Company',
+                                type: 'company',
                                 code: item.code,
                             };
                         } else {
@@ -145,7 +145,7 @@ $(function () {
                                 id: item.id,
                                 first_name: item.first_name,
                                 last_name: item.last_name,
-                                type: 'Person',
+                                type: 'person',
                                 code: item.code,
                             };
                         }
