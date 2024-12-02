@@ -76,7 +76,3 @@ class ShareholderEditForm(forms.ModelForm):
         model = Shareholder
         fields = [ "share_amount"]
         
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['company'].widget.attrs['readonly'] = True
-    #     self.fields['company'].widget.attrs['disabled'] = True

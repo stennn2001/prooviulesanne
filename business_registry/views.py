@@ -30,6 +30,8 @@ def company_create(request):
         company_total_capital = request.POST.get("total_capital", None).strip()
         for shareholder_data in json.loads(shareholders_json_value):
                 share_amount = shareholder_data.get("share_amount", None)
+                if share_amount is None:
+                    shareholders_json_errors.append("Share amount cannot be empty.")
                 if share_amount is not None:
                     total_share_amount += int(share_amount)
         
@@ -141,16 +143,25 @@ def company_edit(request, company_id):
 
     if request.method == 'POST':
         forms = []
+        total_share_amount = 0
         for shareholder in shareholders:
             post_data = request.POST.copy()
-            post_data['share_amount'] = request.POST.get(f'share_amount_{shareholder.id}', '')
+            post_data["share_amount"] = request.POST.get(f"share_amount_{shareholder.id}", "")
+            
+            share_amount = post_data["share_amount"]
+            total_share_amount += int(share_amount)
+            
             form = ShareholderEditForm(post_data, instance=shareholder)
             forms.append(form)
+        
+        if total_share_amount != company.total_capital:
+            messages.error(request, "Total shareholder amount must be equal to company total capital.")
+            return redirect('company_edit', company_id=company.id)
 
         for form in forms:
             if form.is_valid():
                 form.save()
-        messages.success(request, f"Shareholders updated successfully.")
+        messages.success(request, "Shareholders updated successfully.")
         return redirect('company_detail', company_id=company.id)
     else:
         forms = []
