@@ -12,7 +12,7 @@ Follow the steps below to set up and run the project on **Windows**.
 
 ### Installation Steps
 
-Git clone and then navigato to root folder where 'manage.py' exists.
+Git clone and then navigate to root folder where 'manage.py' exists.
 
 1. **Create and activate a virtual environment**:
 
