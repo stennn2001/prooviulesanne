@@ -175,7 +175,7 @@ def company_edit(request, company_id):
         forms = []
         total_share_amount = 0
 
-        post_data = request.POST.copy()
+        post_data = request.POST
         for shareholder in shareholders:
             share_amount_key = f"share_amount_{shareholder.id}"
             share_amount = post_data.get(share_amount_key, "")
@@ -185,13 +185,14 @@ def company_edit(request, company_id):
                     request,
                     f"Invalid share amount for shareholder {shareholder.name}."
                 )
-                return redirect('company_edit', company_id=company.id)
+                return redirect("company_edit", company_id=company.id)
 
             share_amount = int(share_amount)
             total_share_amount += share_amount
 
-            post_data["share_amount"] = share_amount
-            form = ShareholderEditForm(post_data, instance=shareholder)
+            form_data = post_data.copy()
+            form_data["share_amount"] = share_amount
+            form = ShareholderEditForm(form_data, instance=shareholder)
             forms.append(form)
 
         if total_share_amount != company.total_capital:
@@ -199,13 +200,13 @@ def company_edit(request, company_id):
                 request,
                 "Total shareholder amount must be equal to company total capital."
             )
-            return redirect('company_edit', company_id=company.id)
+            return redirect("company_edit", company_id=company.id)
 
         for form in forms:
             if form.is_valid():
                 form.save()
         messages.success(request, "Shareholders updated successfully.")
-        return redirect('company_detail', company_id=company.id)
+        return redirect("company_detail", company_id=company.id)
     else:
         forms = []
         for shareholder in shareholders:
@@ -214,10 +215,10 @@ def company_edit(request, company_id):
         lists = zip(forms, shareholders)
 
     context = {
-        'shareholders': shareholders,
-        'company': company,
-        'forms': forms,
-        'lists': lists
+        "shareholders": shareholders,
+        "company": company,
+        "forms": forms,
+        "lists": lists
     }
 
     return render(request, 'business_registry/company_edit.html', context)
